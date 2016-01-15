@@ -2,7 +2,6 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
 
 /**

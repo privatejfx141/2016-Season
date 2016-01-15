@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.R_Encoder;
 import robot.R_Subsystem;
 import robot.R_Talon;
 import robot.RobotMap;
@@ -20,9 +21,9 @@ public class ChassisSubsystem extends R_Subsystem {
 	Talon leftMotor2 = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR2);
 	Talon rightMotor2 = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR2);
 	DigitalInput limitSwitch = new DigitalInput(RobotMap.SensorMap.LIMIT_SWITCH.port);
-	Encoder leftEncoder = new Encoder(RobotMap.EncoderMap.LEFT.ch1, RobotMap.EncoderMap.LEFT.ch2);
-	Encoder rightEncoder = new Encoder(RobotMap.EncoderMap.RIGHT.ch1, RobotMap.EncoderMap.RIGHT.ch2);
-
+	Encoder leftEncoder = new R_Encoder(RobotMap.EncoderMap.LEFT);
+	Encoder rightEncoder = new R_Encoder(RobotMap.EncoderMap.RIGHT);
+	
 	/*
 	 * Motor PID Controllers
 	 */
@@ -56,7 +57,6 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 	
 	public void initDefaultCommand() {
-
 		setDefaultCommand(new JoystickCommand());
 	}
 
