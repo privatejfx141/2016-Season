@@ -1,18 +1,12 @@
 
 package robot.subsystems;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.R_Gyro;
-import robot.R_PIDController;
-import robot.R_PIDInput;
 import robot.R_Subsystem;
+import robot.R_Talon;
 import robot.RobotMap;
 import robot.commands.JoystickCommand;
 
@@ -21,10 +15,10 @@ import robot.commands.JoystickCommand;
  */
 public class ChassisSubsystem extends R_Subsystem {
 	
-	Talon leftMotor1 = new Talon(RobotMap.MotorMap.LEFT_MOTOR1.port);
-	Talon rightMotor1 = new Talon(RobotMap.MotorMap.RIGHT_MOTOR1.port);
-	Talon leftMotor2 = new Talon(RobotMap.MotorMap.LEFT_MOTOR2.port);
-	Talon rightMotor2 = new Talon(RobotMap.MotorMap.RIGHT_MOTOR2.port);
+	Talon leftMotor1 = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR1);
+	Talon rightMotor1 = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR1);
+	Talon leftMotor2 = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR2);
+	Talon rightMotor2 = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR2);
 	DigitalInput limitSwitch = new DigitalInput(RobotMap.SensorMap.LIMIT_SWITCH.port);
 	Encoder leftEncoder = new Encoder(RobotMap.EncoderMap.LEFT.ch1, RobotMap.EncoderMap.LEFT.ch2);
 	Encoder rightEncoder = new Encoder(RobotMap.EncoderMap.RIGHT.ch1, RobotMap.EncoderMap.RIGHT.ch2);
@@ -54,12 +48,12 @@ public class ChassisSubsystem extends R_Subsystem {
 	public ChassisSubsystem() {
 		pidControllers.add(leftMotorPID);
 		pidControllers.add(rightMotorPID);
-	}
+	}*/
 	
 	public void init() {
-		gyro.initGyro();
-		gyro.setSensitivity(0.00165);
-	}*/
+		/*gyro.initGyro();
+		gyro.setSensitivity(0.00165);*/
+	}
 	
 	public void initDefaultCommand() {
 
@@ -70,14 +64,6 @@ public class ChassisSubsystem extends R_Subsystem {
 		if (!limitSwitch.get()) {
 			leftSpeed = 0;
 			rightSpeed = 0;
-		}
-
-		if (RobotMap.MotorMap.LEFT_MOTOR1.inverted) {
-			leftSpeed *= -1;
-		}
-
-		if (RobotMap.MotorMap.RIGHT_MOTOR1.inverted) {
-			rightSpeed *= -1;
 		}
 		
 		rightMotor1.set(rightSpeed);
