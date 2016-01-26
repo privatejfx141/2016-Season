@@ -9,6 +9,9 @@ import robot.Robot;
  *
  */
 public class JoystickCommand extends Command {
+	long timeStart = 0;
+	long timeLength = 100000000;
+	boolean pistonState = true;	// true -> open piston, false -> close piston
 
     public JoystickCommand() {
         requires(Robot.chassisSubsystem);
@@ -40,6 +43,21 @@ public class JoystickCommand extends Command {
     	}
     	
     	Robot.chassisSubsystem.setSpeed(leftSpeed, rightSpeed);
+    	
+    	if(Robot.oi.getPistonButton())
+    	{	
+    		if(timeStart==0)
+    		{
+    			timeStart = System.nanoTime();
+    			pistonState = !pistonState;
+    			Robot.chassisSubsystem.setPiston(pistonState);
+    			//System.out.println(pistonState);
+    		}else if((System.nanoTime()-timeStart) > timeLength)	// waited enough
+    		{
+    			timeStart = 0;
+    		}
+    	}
+    	
 	}
 
     // Make this return true when this Command no longer needs to run execute()

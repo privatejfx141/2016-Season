@@ -2,6 +2,7 @@ package robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.R_GameController.Axis;
+import robot.R_GameController.Button;
 import robot.R_GameController.Stick;
 
 /**
@@ -25,6 +26,12 @@ public class OI {
 
 	public int getPOVAngle() {
 		return driverStick.getPOVAngle();
+	}
+	
+	public boolean getPistonButton()
+	{
+		boolean joystickValue = driverStick.getButton(Button.X);
+		return joystickValue;
 	}
 	
 	public void updateDashboard() {

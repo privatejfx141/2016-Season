@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.R_Gyro;
@@ -13,6 +14,7 @@ import robot.R_PIDInput;
 import robot.R_Subsystem;
 import robot.R_Talon;
 import robot.RobotMap;
+import robot.R_Compressor;
 import robot.commands.JoystickCommand;
 
 /**
@@ -47,6 +49,10 @@ public class ChassisSubsystem extends R_Subsystem {
 
 	// Gyro
 	R_Gyro gyro = new R_Gyro(RobotMap.SensorMap.GYRO.port);
+	
+	R_Compressor compressor = new R_Compressor(0);
+	Solenoid s1 = new Solenoid(0);
+	Solenoid s2 = new Solenoid(1);
 
 	public void init() {
 		
@@ -56,6 +62,8 @@ public class ChassisSubsystem extends R_Subsystem {
 		gyro.initGyro();
 		gyro.setSensitivity(0.00165 * (360.0/365.0));
 		gyro.calibrate();
+		
+		compressor.start();
 	}
 	
 	public void initDefaultCommand() {
@@ -77,6 +85,19 @@ public class ChassisSubsystem extends R_Subsystem {
 		if (!rightMotorPID.isEnabled()) {
 			rightMotorPID.enable();
 		}
+		
+	}
+	
+	public void setPiston(boolean state)
+	{
+		// turn solenoid
+		s1.set(state);
+		s2.set(!state);
+	}
+	
+	public boolean getPistonState()
+	{
+		return s1.get();
 	}
 
 	public double getCurrentAngle() {
@@ -106,5 +127,6 @@ public class ChassisSubsystem extends R_Subsystem {
 		SmartDashboard.putData("Right Motor PID", rightMotorPID);
 		SmartDashboard.putData("Gyro", gyro);
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+		SmartDashboard.putBoolean("startTime", getPistonState());
 	}
 }
