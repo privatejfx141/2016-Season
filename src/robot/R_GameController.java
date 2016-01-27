@@ -38,7 +38,18 @@ public abstract class R_GameController {
 		LEFT_BUMPER, 
 		RIGHT_BUMPER,
 		START,
-		BACK;
+		BACK,
+		b1,
+		b2,
+		b3,
+		b4,
+		b5,
+		b6,
+		b7,
+		b8,
+		b9,
+		b10,
+		b11;
 	}
 	
 	private double curLeftRumble = 0.0;
