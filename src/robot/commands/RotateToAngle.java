@@ -1,13 +1,13 @@
-/*package robot.commands;
+package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
 
-*//**
+/**
  *
- *//*
+ */
 public class RotateToAngle extends Command {
 
 	private double targetAngle;
@@ -88,4 +88,3 @@ public class RotateToAngle extends Command {
 
 	}
 }
-*/

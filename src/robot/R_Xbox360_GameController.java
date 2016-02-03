@@ -25,7 +25,7 @@ public class R_Xbox360_GameController extends R_GameController {
 				axisValue = joystick.getRawAxis(0);
 				break;
 			case Y:
-				axisValue = joystick.getRawAxis(1);
+				axisValue = -joystick.getRawAxis(1);
 				break;
 			}
 			break;
