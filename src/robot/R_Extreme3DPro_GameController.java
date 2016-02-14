@@ -2,9 +2,27 @@ package robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class R_Extreme3DPro_GameController extends R_GameController {
+public class R_Extreme3DPro_GameController {
 	private final Joystick joystick;
 
+	public enum Axis {
+		X, Y;
+	}
+
+	public enum Button {
+		b1,
+		b2,
+		b3,
+		b4,
+		b5,
+		b6,
+		b7,
+		b8,
+		b9,
+		b10,
+		b11,
+		b12;
+	}
 	public R_Extreme3DPro_GameController(int port) {
 		this.joystick = new Joystick(port);
 	}
@@ -13,30 +31,15 @@ public class R_Extreme3DPro_GameController extends R_GameController {
 		this.joystick = j;
 	}
 
-	@Override
-	public double getAxis(Stick stick, Axis axis) {
+	public double getAxis(Axis axis) {
 		double axisValue = 0.0;
 
-		switch (stick) {
-		case LEFT:
-			switch (axis) {
-			case X:
-				axisValue = joystick.getRawAxis(0);
-				break;
-			case Y:
-				axisValue = joystick.getRawAxis(1);
-				break;
-			}
+		switch (axis) {
+		case X:
+			axisValue = joystick.getRawAxis(0);
 			break;
-		case RIGHT:
-			switch (axis) {
-			case X:
-				axisValue = joystick.getRawAxis(3);
-				break;
-			case Y:
-				axisValue = joystick.getRawAxis(2);
-				break;
-			}
+		case Y:
+			axisValue = joystick.getRawAxis(1);
 			break;
 		}
 
@@ -44,12 +47,6 @@ public class R_Extreme3DPro_GameController extends R_GameController {
 		return Math.round(axisValue * 100) / 100.0;
 	}
 
-	@Override
-	public double getTrigger(Trigger trigger) {
-		return 0;
-	}
-
-	@Override
 	public boolean getButton(Button button) {
 		switch (button) {
 		case b1:
@@ -79,12 +76,10 @@ public class R_Extreme3DPro_GameController extends R_GameController {
 		}
 	}
 
-	@Override
 	public int getPOVAngle() {
 		return joystick.getPOV();
 	}
 
-	@Override
 	public Joystick getRawJoystick() {
 		// TODO Auto-generated method stub
 		return joystick;

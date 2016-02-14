@@ -3,6 +3,7 @@ package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import robot.R_GameController.Button;
 import robot.Robot;
 
 /**
@@ -20,27 +21,31 @@ public class JoystickCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     	double speed = Robot.oi.getSpeed();
     	double turn = Robot.oi.getTurn();
     	double leftSpeed;
     	double rightSpeed;
     	
     	if (Robot.oi.getGyroReset()) {
-    		Robot.chassisSubsystem.resetGyro();
+    		Robot.chassisSubsystem.resetGyroHeading();
     	}
     	
     	if (Robot.oi.getPOVAngle() != -1) {
     		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
     		return;
     	}
-    	/*
-    	// If the user is not turning, then follow the gyro using the GoStraight command.
+    	
+    	if (Robot.oi.getButton(Button.A)) {
+    		Scheduler.getInstance().add(new ShootBallCommand());
+    	}
+    	
+    	// If the driver is not turning, then follow the gyro using the GoStraight command.
     	if (Math.abs(turn) < 0.03) {
     		Scheduler.getInstance().add(new GoStraightCommand(Robot.chassisSubsystem.getCurrentAngle()));
     		return;
     	}
-    	*/
+    	
+    	// If the driver is not driving forward, pivot the robot.
     	if (Math.abs(speed) < 0.03) {
     		leftSpeed = turn;
     		rightSpeed = -turn;

@@ -1,15 +1,11 @@
-
 package robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.R_Encoder;
 import robot.R_Gyro;
 import robot.R_PIDController;
 import robot.R_PIDInput;
@@ -19,20 +15,16 @@ import robot.R_Ultrasonic;
 import robot.RobotMap;
 import robot.commands.JoystickCommand;
 
-/**
- *
- */
 public class ChassisSubsystem extends R_Subsystem {
 
-	Talon leftMotor1 = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR1);
-	Talon rightMotor1 = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR1);
-	Talon leftMotor2 = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR2);
-	Talon rightMotor2 = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR2);
-	Encoder leftEncoder = new R_Encoder(RobotMap.EncoderMap.LEFT);
-	Encoder rightEncoder = new R_Encoder(RobotMap.EncoderMap.RIGHT);
-	DigitalInput leftLimitSwitch = new DigitalInput(RobotMap.SensorMap.LEFT_LIMIT_SWITCH.port);
-	DigitalInput rightLimitSwitch = new DigitalInput(RobotMap.SensorMap.RIGHT_LIMIT_SWITCH.port);
-	R_Ultrasonic ultrasonic = new R_Ultrasonic(RobotMap.SensorMap.ULTRASONIC.port);
+	Talon leftMotor = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR);
+	Talon rightMotor = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR);
+	DigitalInput leftProximitySensor = new DigitalInput(RobotMap.SensorMap.LEFT_PROXIMITY_SENSOR.port);
+	DigitalInput centerProximitySensor = new DigitalInput(RobotMap.SensorMap.CENTER_PROXIMITY_SENSOR.port);
+	DigitalInput rightProximitySensor = new DigitalInput(RobotMap.SensorMap.RIGHT_PROXIMITY_SENSOR.port);
+	Encoder leftEncoder = new Encoder(RobotMap.EncoderMap.LEFT.ch1, RobotMap.EncoderMap.LEFT.ch2);
+	Encoder rightEncoder = new Encoder(RobotMap.EncoderMap.RIGHT.ch1, RobotMap.EncoderMap.RIGHT.ch2);
+	R_Ultrasonic ultrasonicSensor = new R_Ultrasonic(RobotMap.SensorMap.ULTRASONIC.port);
 
 	/*
 	 * Motor PID Controllers
@@ -47,25 +39,22 @@ public class ChassisSubsystem extends R_Subsystem {
 	R_PIDInput rightPIDInput = new R_PIDInput() {
 		@Override
 		public double pidGet() {
-			return rightEncoder.getRate() / RobotMap.EncoderMap.RIGHT.maxRate;
+			return -rightEncoder.getRate() / RobotMap.EncoderMap.RIGHT.maxRate;
 		}
 	};
 
-	R_PIDController leftMotor1PID = new R_PIDController(0.5, 0.0, 0.0, 1.0, leftPIDInput, leftMotor1);
-	R_PIDController leftMotor2PID = new R_PIDController(0.5, 0.0, 0.0, 1.0, leftPIDInput, leftMotor2);
-	R_PIDController rightMotor1PID = new R_PIDController(0.5, 0.0, 0.0, 1.0, rightPIDInput, rightMotor1);
-	R_PIDController rightMotor2PID = new R_PIDController(0.5, 0.0, 0.0, 1.0, rightPIDInput, rightMotor2);
+	R_PIDController leftMotorPID = new R_PIDController(1.0, 0.0, 0.0, 1.0, leftPIDInput, leftMotor);
 
-	List<R_PIDController> pidControllers = new ArrayList<R_PIDController>();
-	PIDController p;
+	R_PIDController rightMotorPID = new R_PIDController(1.5, 0.0, 0.0, 1.0, rightPIDInput, rightMotor);
+
+	ArrayList<R_PIDController> pidControllers = new ArrayList<>();
+
 	// Gyro
 	R_Gyro gyro = new R_Gyro(RobotMap.SensorMap.GYRO.port);
 
 	public void init() {
-		pidControllers.add(leftMotor1PID);
-		pidControllers.add(leftMotor2PID);
-		pidControllers.add(rightMotor1PID);
-		pidControllers.add(rightMotor2PID);
+		pidControllers.add(leftMotorPID);
+		pidControllers.add(rightMotorPID);
 
 		gyro.initGyro();
 		gyro.setSensitivity(0.00165 * (360.0 / 365.0));
@@ -77,22 +66,17 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	public void setSpeed(double leftSpeed, double rightSpeed) {
-		leftMotor1PID.setSetpoint(leftSpeed);
-		leftMotor2PID.setSetpoint(leftSpeed);
-		rightMotor1PID.setSetpoint(rightSpeed);
-		rightMotor2PID.setSetpoint(rightSpeed);
+		SmartDashboard.putNumber("LeftMotorSpeed", leftSpeed);
+		SmartDashboard.putNumber("RightMotorSpeed", rightSpeed);
 
-		if (!leftMotor1PID.isEnabled()) {
-			leftMotor1PID.enable();
+		leftMotorPID.setSetpoint(leftSpeed);
+		rightMotorPID.setSetpoint(rightSpeed);
+
+		if (!leftMotorPID.isEnabled()) {
+			leftMotorPID.enable();
 		}
-		if (!leftMotor2PID.isEnabled()) {
-			leftMotor2PID.enable();
-		}
-		if (!rightMotor1PID.isEnabled()) {
-			rightMotor1PID.enable();
-		}
-		if (!rightMotor2PID.isEnabled()) {
-			rightMotor2PID.enable();
+		if (!rightMotorPID.isEnabled()) {
+			rightMotorPID.enable();
 		}
 	}
 
@@ -104,14 +88,22 @@ public class ChassisSubsystem extends R_Subsystem {
 		return gyro.getAngleDifference(targetAngle);
 	}
 
-	public boolean getFrontLimit() {
-		boolean frontLimit = !rightLimitSwitch.get() || !leftLimitSwitch.get();
-		SmartDashboard.putBoolean("Front Limit", frontLimit);
-		return frontLimit;
+	public boolean getProximity() {
+		boolean proximity = !leftProximitySensor.get() || !centerProximitySensor.get() || !rightProximitySensor.get();
+		SmartDashboard.putBoolean("Proximity Sensor(s) active", proximity);
+		return proximity;
 	}
 
-	public double getUltraSonicDistance() {
-		return this.ultrasonic.getDistance();
+	public double getUltrasonicDistance() {
+		return this.ultrasonicSensor.getDistance();
+	}
+
+	@Override
+	public void periodic() {
+		// Update all of the PIDs every loop
+		for (R_PIDController pid : pidControllers) {
+			pid.calculate();
+		}
 	}
 
 	/**
@@ -126,38 +118,35 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	/**
-	 * Resets the encoders.
+	 * Resets the encoder distance.
 	 */
 	public void resetEncoders() {
 		this.leftEncoder.reset();
 		this.rightEncoder.reset();
 	}
 
-	public void resetGyro() {
+	public void resetUltrasonicSensorFilter() {
+		ultrasonicSensor.reset();
+	}
+
+	public void resetGyroHeading() {
 		gyro.reset();
 	}
 
 	@Override
-	public void periodic() {
-		// Update all of the PIDs every loop
-		for (R_PIDController pid : pidControllers) {
-			pid.calculate();
-		}
-	}
-
-	@Override
 	public void updateDashboard() {
-		SmartDashboard.putData("Left Motor 1", leftMotor1);
-		SmartDashboard.putData("Right Motor 2", rightMotor1);
-		SmartDashboard.putData("Left Motor 1", leftMotor1);
-		SmartDashboard.putData("Right Motor 2", rightMotor1);
+		SmartDashboard.putData("Left Motor", leftMotor);
+		SmartDashboard.putData("Right Motor", rightMotor);
+		SmartDashboard.putData("Left Limit Switch", leftProximitySensor);
+		SmartDashboard.putData("Center Limit Switch", centerProximitySensor);
+		SmartDashboard.putData("Right Limit Switch", rightProximitySensor);
 		SmartDashboard.putData("Left Encoder", leftEncoder);
 		SmartDashboard.putData("Right Encoder", rightEncoder);
-		SmartDashboard.putData("Left Motor PID", leftMotor1PID);
-		SmartDashboard.putData("Left Motor PID", leftMotor2PID);
-		SmartDashboard.putData("Right Motor PID", rightMotor1PID);
-		SmartDashboard.putData("Right Motor PID", rightMotor2PID);
+		SmartDashboard.putData("Left Motor PID", leftMotorPID);
+		SmartDashboard.putData("Right Motor PID", rightMotorPID);
 		SmartDashboard.putData("Gyro", gyro);
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Ultrasonic Sensor Distance", ultrasonicSensor.getDistance());
+		SmartDashboard.putNumber("Raw ultrasonic sensor voltage", ultrasonicSensor.getVoltage());
 	}
 }

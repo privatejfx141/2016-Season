@@ -12,6 +12,8 @@ public class DriveToDistance extends AutoGoStraightCommand {
 	 */
 	private double distanceSetpoint;
 
+	private double speedSetpoint;
+
 	/**
 	 * The constructor for a new DriveToDistance command.
 	 * 
@@ -23,14 +25,22 @@ public class DriveToDistance extends AutoGoStraightCommand {
 	 *            The distance to drive to.
 	 */
 	public DriveToDistance(double speed, double angle, double distance) {
-		super(speed, angle);
+		super(angle);
+		this.speedSetpoint = speed;
 		this.distanceSetpoint = distance;
 	}
 
 	// Called just before this Command runs the first time
+	@Override
 	protected void initialize() {
 		Robot.chassisSubsystem.resetEncoders();
 		super.initialize();
+
+		if (distanceSetpoint < 0) {
+			setSpeed(speedSetpoint, Direction.BACKWARD);
+		} else {
+			setSpeed(speedSetpoint, Direction.FORWARD);
+		}
 	}
 
 	/**
@@ -43,7 +53,8 @@ public class DriveToDistance extends AutoGoStraightCommand {
 	}
 
 	// Called once after isFinished returns true
+	@Override
 	protected boolean isFinished() {
-		return (distanceSetpoint <= Robot.chassisSubsystem.getEncoderDistance());
+		return (Math.abs(Robot.chassisSubsystem.getEncoderDistance()) >= Math.abs(distanceSetpoint));
 	}
 }

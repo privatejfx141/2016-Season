@@ -11,34 +11,33 @@ public class GoStraightPID {
 	/*
 	 * Angle PID Controller
 	 * 
-	 * These controllers are declared as static so that they can be adjusted in the console
+	 * The angle PID controller is declared as static so that they can be adjusted in the SmartDashboard
 	 */
-	private static R_PIDInput gyroPIDInput = new R_PIDInput() {
+	private static R_PIDInput anglePIDInput = new R_PIDInput() {
 		@Override
 		public double pidGet() {
-			return -Robot.chassisSubsystem.getAngleDifference(pidSetpoint) / 180.0;
+			return -Robot.chassisSubsystem.getAngleDifference(angleSetpoint) / 180.0;
 		}
 	};
 
-	private static PIDOutput gyroPIDOutput = new PIDOutput() {
+	private static PIDOutput anglePIDOutput = new PIDOutput() {
 		@Override
 		public void pidWrite(double output) {
 			pidOutputValue = output;
 		}
 	};
 	
-	private static double pidSetpoint = 0.0;
+	private static double angleSetpoint = 0.0;
 	private static double pidOutputValue = 0.0;
 
-	private static R_PIDController anglePIDController = new R_PIDController(30.0, 3.0, 0.0, 1.0, gyroPIDInput, gyroPIDOutput);
-
-	//*********************************************************************************************
+	private static R_PIDController anglePIDController = 
+			new R_PIDController(20.0, 2.0, 0.0, 1.0, anglePIDInput, anglePIDOutput);
 	
 	public static void setEnabled(boolean enabled) {
 		if (enabled) {
 			anglePIDController.enable();
 		} else {
-			anglePIDController.disable();
+			anglePIDController.reset();
 		}
 	}
 	
@@ -51,8 +50,7 @@ public class GoStraightPID {
 	}
 	
 	public static void setSetpoint(double setpoint) {
-		anglePIDController.setSetpoint(setpoint);
-		pidSetpoint = setpoint;
+		angleSetpoint = setpoint;
 	}
 
 	public static void periodic() {

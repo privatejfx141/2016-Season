@@ -1,20 +1,15 @@
 package robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import robot.Robot;
 
 /**
  *
  */
-public class MovePiston extends Command {
-	
-	DoubleSolenoid piston;
-	Value moveValue;
-	
-    public MovePiston(DoubleSolenoid piston) {
-        this.piston = piston;
-        this.moveValue = (piston.get() == Value.kForward) ? Value.kReverse: Value.kForward;;
+public class IntakeBallCommand extends Command {
+
+    public IntakeBallCommand() {
+        requires(Robot.shooterSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -22,13 +17,13 @@ public class MovePiston extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {    	
-    	this.piston.set(this.moveValue);
+    protected void execute() {
+    	Robot.shooterSubsystem.setSpeed(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return true;
+        return Robot.shooterSubsystem.isBallIn();
     }
 
     // Called once after isFinished returns true
