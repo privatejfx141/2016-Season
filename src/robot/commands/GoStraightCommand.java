@@ -8,7 +8,6 @@ import robot.Robot;
  *
  */
 public class GoStraightCommand extends Command {
-
 	double angleSetpoint;
 
 	public GoStraightCommand(double angle) {
@@ -44,7 +43,6 @@ public class GoStraightCommand extends Command {
 			leftSpeed  =  turn * 0.25;
 			rightSpeed = -turn * 0.25;
 		} else {
-			
 			// If the speed is more than zero, then slow down one side of the robot
 			leftSpeed  = (turn < 0) ? speed * (1 + turn) : speed;
 			rightSpeed = (turn < 0) ? speed              : speed * (1 - turn);

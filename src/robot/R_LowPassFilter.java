@@ -1,5 +1,13 @@
 package robot;
 
+/**
+ * This class utilizes bilinear transformations to calculate the, what would be,
+ * a more correct reading from the sensor. It also tracks the last value and the current
+ * value and throws out any readings that stray too far from the expected values 
+ * 
+ * @author Chase
+ * 
+ */
 public class R_LowPassFilter {
 
 	private final double tau;
@@ -46,7 +54,6 @@ public class R_LowPassFilter {
     public double calculate(double x) {
     	// Determine whether to use this sample.
         if (Math.abs(x - xPrevious) < maxIncrement || Math.abs(lastError - x) < 5) {
-
        	    // y = [(x + xp) - (1 - (2tau/T))yp] / [1 + (2tau/T)]
 
         	double numerator = (x + xPrevious) - (1 - (2 * tau / sampleTime)) * yPrevious;

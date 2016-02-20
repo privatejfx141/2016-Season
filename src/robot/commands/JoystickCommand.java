@@ -23,21 +23,32 @@ public class JoystickCommand extends Command {
     protected void execute() {
     	double speed = Robot.oi.getSpeed();
     	double turn = Robot.oi.getTurn();
+    	
     	double leftSpeed;
     	double rightSpeed;
-    	
-    	if (Robot.oi.getGyroReset()) {
-    		Robot.chassisSubsystem.resetGyroHeading();
-    	}
     	
     	if (Robot.oi.getPOVAngle() != -1) {
     		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
     		return;
     	}
     	
-    	if (Robot.oi.getButton(Button.A)) {
-    		Scheduler.getInstance().add(new ShootBallCommand());
+    	if (Robot.oi.getButton(Button.BACK)) {
+    		Robot.chassisSubsystem.resetGyroHeading();
     	}
+    	
+    	if (Robot.oi.getButton(Button.START)) {
+    		Robot.chassisSubsystem.calibrateGyro();
+    	}
+    	
+    	if (Robot.oi.getButton(Button.RIGHT_BUMPER)) {
+    		if (Robot.shooterSubsystem.isBallIn()) {
+    			Scheduler.getInstance().add(new ShootBallCommand());
+    		} else {
+    			Scheduler.getInstance().add(new IntakeBallCommand());
+    		}
+    	}
+    	
+    	
     	
     	// If the driver is not turning, then follow the gyro using the GoStraight command.
     	if (Math.abs(turn) < 0.03) {

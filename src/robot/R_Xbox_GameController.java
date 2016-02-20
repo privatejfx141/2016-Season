@@ -66,8 +66,8 @@ public class R_Xbox_GameController extends R_GameController {
 		double triggerValue = 0.0;
 
 		switch (trigger) {
-		case LEFT:  triggerValue = joystick.getRawAxis(11); break;
-		case RIGHT: triggerValue = joystick.getRawAxis(12); break;
+		case LEFT:  triggerValue = joystick.getRawAxis(2); break;
+		case RIGHT: triggerValue = joystick.getRawAxis(3); break;
 		}
 
 		// Round the trigger value to 2 decimal places

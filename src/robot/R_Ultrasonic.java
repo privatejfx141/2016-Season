@@ -25,9 +25,10 @@ public class R_Ultrasonic extends AnalogInput {
 	 * @return Distance in inches
 	 */
 	public double getRawDistance() {
-		// y = mx + b v = 0.0094d + 0.01
+		// y = mx + b v = y = 103.97x + 0.2898
+		// R^2 = 0.9999
 		// (y - b)/m = x
-		return (super.getVoltage() - 0.01) / 0.0094;
+		return 103.97 * super.getVoltage() + 0.2898;
 	}
 	
 	/**

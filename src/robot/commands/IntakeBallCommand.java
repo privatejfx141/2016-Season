@@ -2,6 +2,7 @@ package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
+import robot.R_GameController.Button;
 
 /**
  *
@@ -23,11 +24,12 @@ public class IntakeBallCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.shooterSubsystem.isBallIn();
+        return Robot.shooterSubsystem.isBallIn() || Robot.oi.getButton(Button.LEFT_BUMPER);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.shooterSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

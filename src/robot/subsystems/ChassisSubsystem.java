@@ -20,7 +20,6 @@ public class ChassisSubsystem extends R_Subsystem {
 	Talon leftMotor = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR);
 	Talon rightMotor = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR);
 	DigitalInput leftProximitySensor = new DigitalInput(RobotMap.SensorMap.LEFT_PROXIMITY_SENSOR.port);
-	DigitalInput centerProximitySensor = new DigitalInput(RobotMap.SensorMap.CENTER_PROXIMITY_SENSOR.port);
 	DigitalInput rightProximitySensor = new DigitalInput(RobotMap.SensorMap.RIGHT_PROXIMITY_SENSOR.port);
 	Encoder leftEncoder = new Encoder(RobotMap.EncoderMap.LEFT.ch1, RobotMap.EncoderMap.LEFT.ch2);
 	Encoder rightEncoder = new Encoder(RobotMap.EncoderMap.RIGHT.ch1, RobotMap.EncoderMap.RIGHT.ch2);
@@ -43,9 +42,8 @@ public class ChassisSubsystem extends R_Subsystem {
 		}
 	};
 
-	R_PIDController leftMotorPID = new R_PIDController(1.0, 0.0, 0.0, 1.0, leftPIDInput, leftMotor);
-
-	R_PIDController rightMotorPID = new R_PIDController(1.5, 0.0, 0.0, 1.0, rightPIDInput, rightMotor);
+	R_PIDController leftMotorPID = new R_PIDController(1.9, 0.0, 0.0, 1.0, leftPIDInput, leftMotor);
+	R_PIDController rightMotorPID = new R_PIDController(1.9, 0.0, 0.0, 1.0, rightPIDInput, rightMotor);
 
 	ArrayList<R_PIDController> pidControllers = new ArrayList<>();
 
@@ -57,7 +55,7 @@ public class ChassisSubsystem extends R_Subsystem {
 		pidControllers.add(rightMotorPID);
 
 		gyro.initGyro();
-		gyro.setSensitivity(0.00165 * (360.0 / 365.0));
+		gyro.setSensitivity(0.00165 * 360 / 364.0);
 		gyro.calibrate();
 	}
 
@@ -89,7 +87,7 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	public boolean getProximity() {
-		boolean proximity = !leftProximitySensor.get() || !centerProximitySensor.get() || !rightProximitySensor.get();
+		boolean proximity = !leftProximitySensor.get() || !rightProximitySensor.get();
 		SmartDashboard.putBoolean("Proximity Sensor(s) active", proximity);
 		return proximity;
 	}
@@ -132,13 +130,16 @@ public class ChassisSubsystem extends R_Subsystem {
 	public void resetGyroHeading() {
 		gyro.reset();
 	}
+	
+	public void calibrateGyro() {
+		gyro.calibrate();
+	}
 
 	@Override
 	public void updateDashboard() {
 		SmartDashboard.putData("Left Motor", leftMotor);
 		SmartDashboard.putData("Right Motor", rightMotor);
 		SmartDashboard.putData("Left Limit Switch", leftProximitySensor);
-		SmartDashboard.putData("Center Limit Switch", centerProximitySensor);
 		SmartDashboard.putData("Right Limit Switch", rightProximitySensor);
 		SmartDashboard.putData("Left Encoder", leftEncoder);
 		SmartDashboard.putData("Right Encoder", rightEncoder);

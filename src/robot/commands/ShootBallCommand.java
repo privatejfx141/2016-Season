@@ -1,6 +1,7 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import robot.R_GameController.Button;
 import robot.Robot;
 
 /**
@@ -19,12 +20,12 @@ public class ShootBallCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooterSubsystem.setSpeed(1.0);
+    	Robot.shooterSubsystem.setSpeed(-1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.isTimedOut();
+        return this.isTimedOut() || Robot.oi.getButton(Button.LEFT_BUMPER);
     }
 
     // Called once after isFinished returns true
