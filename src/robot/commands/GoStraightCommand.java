@@ -1,8 +1,10 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Robot;
+import robot.util.R_GameController.Button;
 
 /**
  *
@@ -32,6 +34,19 @@ public class GoStraightCommand extends Command {
 		SmartDashboard.putNumber("Angle difference", -Robot.chassisSubsystem.getAngleDifference(angleSetpoint));
 		SmartDashboard.putNumber("AnglePIDOutput", GoStraightPID.getOutput());
 
+		if (Robot.oi.getButton(Button.BACK)) {
+    		Robot.chassisSubsystem.resetGyro();
+    	}
+    	
+    	if (Robot.oi.getButton(Button.START)) {
+    		Robot.chassisSubsystem.calibrateGyro();
+    	}
+    	
+    	if (Robot.oi.getPOVAngle() != -1) {
+    		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
+    		return;
+    	}
+		
 		double turn = GoStraightPID.getOutput();
 
 		// Reverse the direction of the turn when going backwards
@@ -58,7 +73,6 @@ public class GoStraightCommand extends Command {
 			return true;
 		}
 		return false;
-
 	}
 
 	// Called once after isFinished returns true

@@ -1,4 +1,4 @@
-package robot.commands.auto;
+package robot.commands.auto.base;
 
 import robot.Robot;
 

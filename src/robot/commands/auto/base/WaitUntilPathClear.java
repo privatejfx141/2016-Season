@@ -1,4 +1,4 @@
-package robot.commands.auto;
+package robot.commands.auto.base;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Field.Slot;

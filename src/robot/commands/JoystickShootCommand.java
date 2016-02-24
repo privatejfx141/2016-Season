@@ -1,15 +1,16 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
 import robot.util.R_GameController.Button;
 
 /**
  *
  */
-public class IntakeBallCommand extends Command {
+public class JoystickShootCommand extends Command {
 
-    public IntakeBallCommand() {
+    public JoystickShootCommand() {
         requires(Robot.shooterSubsystem);
     }
 
@@ -19,17 +20,22 @@ public class IntakeBallCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooterSubsystem.setSpeed(1.0);
+    	if (Robot.oi.getButton(Button.RIGHT_BUMPER)) {
+    		if (Robot.shooterSubsystem.isBallIn()) {
+    			Scheduler.getInstance().add(new ShootBallCommand());
+    		} else {
+    			Scheduler.getInstance().add(new IntakeBallCommand());
+    		}
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.shooterSubsystem.isBallIn() || Robot.oi.getButton(Button.LEFT_BUMPER);
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterSubsystem.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same

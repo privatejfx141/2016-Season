@@ -1,8 +1,8 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import robot.R_GameController.Button;
 import robot.Robot;
+import robot.util.R_GameController.Button;
 
 /**
  *

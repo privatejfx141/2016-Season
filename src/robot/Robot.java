@@ -31,11 +31,12 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 
+	@Override
 	public void autonomousInit() {
 		autonomousCommand = oi.getAutoCommand();
 
 		// schedule the autonomous command
-		Scheduler.getInstance().add(autonomousCommand);
+		if (autonomousCommand != null) autonomousCommand.start();
 
 		updateDashboard();
 	}
@@ -136,6 +137,7 @@ public class Robot extends IterativeRobot {
 		oi.updateDashboard();
 
 		GoStraightPID.updateDashboard();
+		
 		// Put the currently scheduled commands on the dashboard
 		// SmartDashboard.putData("SchedulerCommands", Scheduler.getInstance());
 	}

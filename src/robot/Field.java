@@ -1,7 +1,6 @@
 package robot;
 
 public class Field {
-	
 	public enum Goal {
 		LEFT ("Left"),
 		CENTER ("Center"),
@@ -46,16 +45,13 @@ public class Field {
 	}
 	
 	public enum Slot { 
-		
-		//FIXME: APPROX VALUES USED, CHANGE BADLY.
 		ONE   (1, 10), 
-		TWO   (2, 60), 
+		TWO   (2, 73), 
 		THREE (3, 110), 
 		FOUR  (4, 160), 
-		FIVE  (5, 180); 
+		FIVE  (5, 215); 
 	
 		private final int intValue;
-		
 		private final double distanceToLeftWall;
 		
 		Slot (int intValue, double distanceToLeftWall) {
@@ -76,11 +72,9 @@ public class Field {
 		public double getDistanceToLeftWall() {
 			return distanceToLeftWall;
 		}
-		
 	}
 	
 	public enum Defense {
-
 		LOW_BAR         ("Low Bar"),
 		RAMPARTS        ("Ramparts"),
 		MOAT            ("Moat"),

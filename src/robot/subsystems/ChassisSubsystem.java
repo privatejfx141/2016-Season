@@ -3,26 +3,25 @@ package robot.subsystems;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.R_Gyro;
 import robot.R_PIDController;
 import robot.R_PIDInput;
 import robot.R_Subsystem;
-import robot.R_Talon;
-import robot.R_Ultrasonic;
 import robot.RobotMap;
-import robot.commands.JoystickCommand;
+import robot.commands.JoystickChassisCommand;
+import robot.util.R_Encoder;
+import robot.util.R_Gyro;
+import robot.util.R_Ultrasonic;
+import robot.util.R_Victor;
 
 public class ChassisSubsystem extends R_Subsystem {
 
-	Talon leftMotor = new R_Talon(RobotMap.MotorMap.LEFT_MOTOR);
-	Talon rightMotor = new R_Talon(RobotMap.MotorMap.RIGHT_MOTOR);
+	R_Victor leftMotor = new R_Victor(RobotMap.MotorMap.LEFT_MOTOR);
+	R_Victor rightMotor = new R_Victor(RobotMap.MotorMap.RIGHT_MOTOR);
 	DigitalInput leftProximitySensor = new DigitalInput(RobotMap.SensorMap.LEFT_PROXIMITY_SENSOR.port);
 	DigitalInput rightProximitySensor = new DigitalInput(RobotMap.SensorMap.RIGHT_PROXIMITY_SENSOR.port);
-	Encoder leftEncoder = new Encoder(RobotMap.EncoderMap.LEFT.ch1, RobotMap.EncoderMap.LEFT.ch2);
-	Encoder rightEncoder = new Encoder(RobotMap.EncoderMap.RIGHT.ch1, RobotMap.EncoderMap.RIGHT.ch2);
+	R_Encoder leftEncoder = new R_Encoder(RobotMap.EncoderMap.LEFT);
+	R_Encoder rightEncoder = new R_Encoder(RobotMap.EncoderMap.RIGHT);
 	R_Ultrasonic ultrasonicSensor = new R_Ultrasonic(RobotMap.SensorMap.ULTRASONIC.port);
 
 	/*
@@ -42,8 +41,8 @@ public class ChassisSubsystem extends R_Subsystem {
 		}
 	};
 
-	R_PIDController leftMotorPID = new R_PIDController(1.9, 0.0, 0.0, 1.0, leftPIDInput, leftMotor);
-	R_PIDController rightMotorPID = new R_PIDController(1.9, 0.0, 0.0, 1.0, rightPIDInput, rightMotor);
+	R_PIDController leftMotorPID = new R_PIDController(1.7, 0.0, 0.0, 1.0, leftPIDInput, leftMotor);
+	R_PIDController rightMotorPID = new R_PIDController(1.7, 0.0, 0.0, 1.0, rightPIDInput, rightMotor);
 
 	ArrayList<R_PIDController> pidControllers = new ArrayList<>();
 
@@ -60,7 +59,7 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new JoystickCommand());
+		setDefaultCommand(new JoystickChassisCommand());
 	}
 
 	public void setSpeed(double leftSpeed, double rightSpeed) {
@@ -127,7 +126,7 @@ public class ChassisSubsystem extends R_Subsystem {
 		ultrasonicSensor.reset();
 	}
 
-	public void resetGyroHeading() {
+	public void resetGyro() {
 		gyro.reset();
 	}
 	

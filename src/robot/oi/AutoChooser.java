@@ -3,10 +3,10 @@ package robot.oi;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.commands.auto.DriveToDistance;
-import robot.commands.auto.DriveToProximity;
-import robot.commands.auto.DriveToUltraDistance;
 import robot.commands.auto.TestAutoCommandGroup;
+import robot.commands.auto.base.DriveToDistance;
+import robot.commands.auto.base.DriveToProximity;
+import robot.commands.auto.base.DriveToUltraDistance;
 
 public class AutoChooser {
 

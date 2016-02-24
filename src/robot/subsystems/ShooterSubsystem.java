@@ -3,21 +3,22 @@ package robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.R_Subsystem;
-import robot.R_Talon;
 import robot.RobotMap;
+import robot.commands.JoystickShootCommand;
+import robot.util.R_Victor;
 
 /**
  *
  */
 public class ShooterSubsystem extends R_Subsystem {
-	R_Talon shooterMotor = new R_Talon(RobotMap.MotorMap.INTAKE_MOTOR);
+	R_Victor shooterMotor = new R_Victor(RobotMap.MotorMap.INTAKE_MOTOR);
 	DigitalInput shooterLimitSwitch = new DigitalInput(RobotMap.SensorMap.SHOOTER_LIMIT_SWITCH.port);
 
 	public void init() {
 	}
 
 	public void initDefaultCommand() {
-		//setDefaultCommand(new JoystickCommand());
+		setDefaultCommand(new JoystickShootCommand());	
 	}
 
 	public void shooterWheelSpeed(double leftSpeed, double rightSpeed) {

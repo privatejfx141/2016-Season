@@ -3,15 +3,15 @@ package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import robot.R_GameController.Button;
 import robot.Robot;
+import robot.util.R_GameController.Button;
 
 /**
  *
  */
-public class JoystickCommand extends Command {
+public class JoystickChassisCommand extends Command {
 
-    public JoystickCommand() {
+    public JoystickChassisCommand() {
         requires(Robot.chassisSubsystem);
     }
 
@@ -27,28 +27,18 @@ public class JoystickCommand extends Command {
     	double leftSpeed;
     	double rightSpeed;
     	
-    	if (Robot.oi.getPOVAngle() != -1) {
-    		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
-    		return;
-    	}
-    	
     	if (Robot.oi.getButton(Button.BACK)) {
-    		Robot.chassisSubsystem.resetGyroHeading();
+    		Robot.chassisSubsystem.resetGyro();
     	}
     	
     	if (Robot.oi.getButton(Button.START)) {
     		Robot.chassisSubsystem.calibrateGyro();
     	}
     	
-    	if (Robot.oi.getButton(Button.RIGHT_BUMPER)) {
-    		if (Robot.shooterSubsystem.isBallIn()) {
-    			Scheduler.getInstance().add(new ShootBallCommand());
-    		} else {
-    			Scheduler.getInstance().add(new IntakeBallCommand());
-    		}
+    	if (Robot.oi.getPOVAngle() != -1) {
+    		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
+    		return;
     	}
-    	
-    	
     	
     	// If the driver is not turning, then follow the gyro using the GoStraight command.
     	if (Math.abs(turn) < 0.03) {
@@ -58,11 +48,16 @@ public class JoystickCommand extends Command {
     	
     	// If the driver is not driving forward, pivot the robot.
     	if (Math.abs(speed) < 0.03) {
-    		leftSpeed = turn;
-    		rightSpeed = -turn;
+    		leftSpeed = turn * 0.5;
+    		rightSpeed = -turn * 0.5;
     	} else {
-    		leftSpeed = (turn < 0) ? speed * (1 + turn) : speed;
-    		rightSpeed = (turn > 0) ? speed * (1 - turn) : speed;
+    		if (speed < 0) {
+    			leftSpeed = (turn > 0) ? speed * (1 + turn) : speed;
+    			rightSpeed = (turn < 0) ? speed * (1 - turn) : speed;
+    		} else {
+    			leftSpeed = (turn < 0) ? speed * (1 + turn) : speed;
+        		rightSpeed = (turn > 0) ? speed * (1 - turn) : speed;
+    		}
     	}
     	
     	Robot.chassisSubsystem.setSpeed(leftSpeed, rightSpeed);

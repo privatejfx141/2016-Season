@@ -2,6 +2,9 @@ package robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import robot.commands.RotateToAngle;
+import robot.commands.auto.base.DriveToDistance;
+import robot.commands.auto.base.DriveToProximity;
+import robot.commands.auto.base.DriveToUltraDistance;
 
 /**
  *

@@ -1,11 +1,11 @@
-package robot;
+package robot.util;
 
-public class Toggle {
+public class R_Toggle {
 
 	boolean state, previousState;
 	long time = System.nanoTime();
 
-	public Toggle(boolean initialState) {
+	public R_Toggle(boolean initialState) {
 		this.state = initialState;
 	}
 

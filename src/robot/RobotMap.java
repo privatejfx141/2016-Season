@@ -40,8 +40,8 @@ public class RobotMap {
     }
     
     public enum EncoderMap {
-    	LEFT (3, 4, 1900.0, 10.189),
-    	RIGHT(1, 0, 1900.0, 10.160);
+    	LEFT (3, 4, 2000.0, 10.189),
+    	RIGHT(1, 0, 2000.0, 10.160);
     	
     	public final int ch1;
     	public final int ch2;

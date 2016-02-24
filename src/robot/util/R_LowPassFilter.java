@@ -1,4 +1,4 @@
-package robot;
+package robot.util;
 
 /**
  * This class utilizes bilinear transformations to calculate the, what would be,

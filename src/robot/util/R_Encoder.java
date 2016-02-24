@@ -1,4 +1,4 @@
-package robot;
+package robot.util;
 
 import edu.wpi.first.wpilibj.Encoder;
 import robot.RobotMap.EncoderMap;

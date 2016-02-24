@@ -8,20 +8,19 @@ import robot.Field.Defense;
 import robot.Field.Goal;
 import robot.Field.Lane;
 import robot.Field.Slot;
-import robot.R_GameController;
-import robot.R_GameController.Axis;
-import robot.R_GameController.Button;
-import robot.R_GameController.Stick;
-import robot.R_GameController.Trigger;
-import robot.R_GameControllerFactory;
 import robot.commands.auto.AutoCommandGroup;
+import robot.util.R_GameController;
+import robot.util.R_GameControllerFactory;
+import robot.util.R_GameController.Axis;
+import robot.util.R_GameController.Button;
+import robot.util.R_GameController.Stick;
+import robot.util.R_GameController.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-
 	private R_GameController driverStick = R_GameControllerFactory.getGameController(0);;
 	private AutoChooser autoChooser = new AutoChooser();
 	private double[] lastButtonPress = new double[Button.values().length];
@@ -40,11 +39,12 @@ public class OI {
 		return driverStick.getTrigger(trigger);
 	}
 	
+	public int getPOVAngle() {
+		return driverStick.getPOVAngle();
+	}
+	
 	public boolean getButton(Button button) {
-		if (driverStick.getButton(button)) {
-			return debounce(button);
-		} 
-		return false;
+		return debounce(button);
 	}
 
 	/**
@@ -84,19 +84,38 @@ public class OI {
 	public void setRumble(double leftRumble, double rightRumble) {
 		driverStick.setRumble(leftRumble, rightRumble);
 	}
-
-	public int getPOVAngle() {
-		return driverStick.getPOVAngle();
-	}
 	
+	/**
+	 * Returns the defense that the robot is currently set in front of 
+	 * as set in smart dashboard.
+	 * 
+	 * @return Defense
+	 * 				The defense the robot is in front of
+	 */
 	public Defense getDefense() {
 		return Defense.toEnum(autoChooser.getSelectedDefence());
 	}
 
+	/**
+	 * Returns the slot that the robot is currently at as set in 
+	 * smart dashboard.
+	 * 
+	 * @return Slot
+	 * 				The slot that the robot is at
+	 */
 	public Slot getSlot() {
 		return Slot.toEnum(autoChooser.getSelectedSlot());
 	}
 
+	/**
+	 * Returns the lane that the robot should make it's turn in. 
+	 * Two "lanes" have been allocated on the field, short, and long,
+	 * this is to help protect against robot collisions when doing autonomous.
+	 * Must discuss with allience members which lane they will be occupying so 
+	 * as to decide when to turn.
+	 * @return Lane
+	 * 				The lane that the robot will turn in
+	 */
 	public Lane getLane() {
 		return Lane.toEnum(autoChooser.getSelectedDistance());
 	}
@@ -112,6 +131,7 @@ public class OI {
 	 * 				Returns the autonomous command for autonomous.
 	 */
 	public Command getAutoCommand() {
+		System.out.println("Getting Auto Command");
 		return new AutoCommandGroup(getSlot(), getDefense(), getLane(), getGoal());
 	}
 	

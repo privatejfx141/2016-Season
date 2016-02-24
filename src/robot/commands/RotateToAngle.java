@@ -13,7 +13,7 @@ public class RotateToAngle extends Command {
 	private double targetAngle;
 	private double leftSpeed;
 	private double rightSpeed;
-	private double initSpeed = 0.5;
+	private double initSpeed = 0.2;
 
 	public RotateToAngle(double targetAngle, double time) {
 		requires(Robot.chassisSubsystem);
@@ -43,11 +43,11 @@ public class RotateToAngle extends Command {
 
 		double speed = initSpeed;
 
-		if (Math.abs(angleDifference) < 20) {
+		if (Math.abs(angleDifference) < 30) {
 			speed *= .8;
-		} else if (Math.abs(angleDifference) < 10) {
+		} else if (Math.abs(angleDifference) < 20) {
 			speed *= .5;
-		} else if (Math.abs(angleDifference) < 5) {
+		} else if (Math.abs(angleDifference) < 15) {
 			speed *= .3;
 		}
 
@@ -71,7 +71,7 @@ public class RotateToAngle extends Command {
 		}
 		double angleDifference = Robot.chassisSubsystem.getAngleDifference(this.targetAngle);
 
-		if (Math.abs(angleDifference) < 3) {
+		if (Math.abs(angleDifference) < 8) {
 			return true;
 		} else {
 			return this.isTimedOut();

@@ -1,4 +1,4 @@
-package robot.commands.auto;
+package robot.commands.auto.base;
 
 import robot.Robot;
 
@@ -33,6 +33,7 @@ public class DriveToDistance extends AutoGoStraightCommand {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		System.out.println("Drive To Init");
 		Robot.chassisSubsystem.resetEncoders();
 		super.initialize();
 
@@ -55,6 +56,7 @@ public class DriveToDistance extends AutoGoStraightCommand {
 	// Called once after isFinished returns true
 	@Override
 	protected boolean isFinished() {
+		System.out.println(Robot.chassisSubsystem.getEncoderDistance());
 		return (Math.abs(Robot.chassisSubsystem.getEncoderDistance()) >= Math.abs(distanceSetpoint));
 	}
 }
