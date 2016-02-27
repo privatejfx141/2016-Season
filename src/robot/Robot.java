@@ -32,6 +32,12 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 
+	public static Robot instance = null;
+	
+	public Robot() {
+		Robot.instance = this;
+	}
+	
 	@Override
 	public void autonomousInit() {
 		//autonomousCommand = oi.getAutoCommand();
@@ -48,6 +54,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+//		System.out.println("Auto periodic");
 		Scheduler.getInstance().run();
 		subsystemPeriodic();
 		updateDashboard();
@@ -68,6 +75,7 @@ public class Robot extends IterativeRobot {
 		updateDashboard();
 	}
 
+	public static Robot getInstance() { return instance; }
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.

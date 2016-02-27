@@ -14,11 +14,12 @@ public class Drive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("Test Auto init");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.chassisSubsystem.setSpeed(.25, .25);
+    	Robot.chassisSubsystem.setSpeed(1.0, 1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
