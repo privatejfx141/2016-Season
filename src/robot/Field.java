@@ -24,13 +24,25 @@ public class Field {
 	}
 	
 	public enum Lane {
-		CLOSE ("Close"),
-		FAR ("Far");
+		CLOSE ("Close", 0,130),
+		FAR ("Far", 40, 90);
 		
 		private final String stringValue;
-		
-		Lane(String stringValue) {
+		private final int driveDistance;
+		private final int distanceToWall;
+				
+		Lane(String stringValue, int driveDistance, int distanceToWall) {
 			this.stringValue = stringValue;
+			this.driveDistance = driveDistance;
+			this.distanceToWall = distanceToWall;
+		}
+		
+		public int getDistanceToWall() {
+			return distanceToWall;
+		}
+		
+		public int getDriveDistance() {
+			return driveDistance;
 		}
 		
 		public static Lane toEnum(String stringValue) {
@@ -75,18 +87,24 @@ public class Field {
 	}
 	
 	public enum Defense {
-		LOW_BAR         ("Low Bar"),
-		RAMPARTS        ("Ramparts"),
-		MOAT            ("Moat"),
-		ROCK_WALL       ("Rock Wall"),
-		ROUGH_TERRAIN   ("Rough Terrain"),
-		PORTCULLIS      ("Portcullis"),
-		CHEVAL_DE_FRISE ("Cheval de Frise"); 
+		LOW_BAR         ("Low Bar", 152),
+		RAMPARTS        ("Ramparts", 172),
+		MOAT            ("Moat", 172),
+		ROCK_WALL       ("Rock Wall", 172),
+		ROUGH_TERRAIN   ("Rough Terrain", 172),
+		PORTCULLIS      ("Portcullis", 172),
+		CHEVAL_DE_FRISE ("Cheval de Frise", 172); 
 	
 		private final String stringValue;
+		private final int driveDistance;
 		
-		Defense (String stringValue) {
+		Defense (String stringValue, int driveDistance) {
 			this.stringValue = stringValue;
+			this.driveDistance = driveDistance;
+		}
+		
+		public int getDriveDistance() {
+			return driveDistance;
 		}
 		
 		public static Defense toEnum(String stringValue) {

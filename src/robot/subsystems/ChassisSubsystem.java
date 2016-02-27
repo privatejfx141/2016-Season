@@ -12,12 +12,12 @@ import robot.commands.JoystickChassisCommand;
 import robot.util.R_Encoder;
 import robot.util.R_Gyro;
 import robot.util.R_Ultrasonic;
-import robot.util.R_Victor;
+import robot.util.R_VictorSP;
 
 public class ChassisSubsystem extends R_Subsystem {
 
-	R_Victor leftMotor = new R_Victor(RobotMap.MotorMap.LEFT_MOTOR);
-	R_Victor rightMotor = new R_Victor(RobotMap.MotorMap.RIGHT_MOTOR);
+	R_VictorSP leftMotor = new R_VictorSP(RobotMap.MotorMap.LEFT_MOTOR);
+	R_VictorSP rightMotor = new R_VictorSP(RobotMap.MotorMap.RIGHT_MOTOR);
 	DigitalInput leftProximitySensor = new DigitalInput(RobotMap.SensorMap.LEFT_PROXIMITY_SENSOR.port);
 	DigitalInput rightProximitySensor = new DigitalInput(RobotMap.SensorMap.RIGHT_PROXIMITY_SENSOR.port);
 	R_Encoder leftEncoder = new R_Encoder(RobotMap.EncoderMap.LEFT);

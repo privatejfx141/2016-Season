@@ -7,7 +7,6 @@ import robot.Robot;
 import robot.commands.GoStraightPID;
 
 public abstract class AutoGoStraightCommand extends Command {
-
 	public enum Direction {
 		FORWARD, BACKWARD;
 	}
@@ -34,7 +33,6 @@ public abstract class AutoGoStraightCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-
 		double speed = speedSetpoint;
 		double leftSpeed;
 		double rightSpeed;

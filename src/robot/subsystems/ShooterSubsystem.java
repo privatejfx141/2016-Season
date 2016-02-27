@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.R_Subsystem;
 import robot.RobotMap;
 import robot.commands.JoystickShootCommand;
-import robot.util.R_Victor;
+import robot.util.R_VictorSP;
 
 /**
  *
  */
 public class ShooterSubsystem extends R_Subsystem {
-	R_Victor shooterMotor = new R_Victor(RobotMap.MotorMap.INTAKE_MOTOR);
+	R_VictorSP shooterMotor = new R_VictorSP(RobotMap.MotorMap.INTAKE_MOTOR);
 	DigitalInput shooterLimitSwitch = new DigitalInput(RobotMap.SensorMap.SHOOTER_LIMIT_SWITCH.port);
 
 	public void init() {

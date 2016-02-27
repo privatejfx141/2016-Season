@@ -27,7 +27,6 @@ public class R_Ultrasonic extends AnalogInput {
 	public double getRawDistance() {
 		// y = mx + b v = y = 103.97x + 0.2898
 		// R^2 = 0.9999
-		// (y - b)/m = x
 		return 103.97 * super.getVoltage() + 0.2898;
 	}
 	
