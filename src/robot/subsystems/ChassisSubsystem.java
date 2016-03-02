@@ -15,7 +15,6 @@ import robot.util.R_Ultrasonic;
 import robot.util.R_VictorSP;
 
 public class ChassisSubsystem extends R_Subsystem {
-
 	R_VictorSP leftMotor = new R_VictorSP(RobotMap.MotorMap.LEFT_MOTOR);
 	R_VictorSP rightMotor = new R_VictorSP(RobotMap.MotorMap.RIGHT_MOTOR);
 	DigitalInput leftProximitySensor = new DigitalInput(RobotMap.SensorMap.LEFT_PROXIMITY_SENSOR.port);
@@ -23,10 +22,8 @@ public class ChassisSubsystem extends R_Subsystem {
 	R_Encoder leftEncoder = new R_Encoder(RobotMap.EncoderMap.LEFT);
 	R_Encoder rightEncoder = new R_Encoder(RobotMap.EncoderMap.RIGHT);
 	R_Ultrasonic ultrasonicSensor = new R_Ultrasonic(RobotMap.SensorMap.ULTRASONIC.port);
+	R_Gyro gyro = new R_Gyro(RobotMap.SensorMap.GYRO.port);
 
-	/*
-	 * Motor PID Controllers
-	 */
 	R_PIDInput leftPIDInput = new R_PIDInput() {
 		@Override
 		public double pidGet() {
@@ -46,9 +43,6 @@ public class ChassisSubsystem extends R_Subsystem {
 
 	ArrayList<R_PIDController> pidControllers = new ArrayList<>();
 
-	// Gyro
-	R_Gyro gyro = new R_Gyro(RobotMap.SensorMap.GYRO.port);
-
 	public void init() {
 		pidControllers.add(leftMotorPID);
 		pidControllers.add(rightMotorPID);
@@ -62,6 +56,12 @@ public class ChassisSubsystem extends R_Subsystem {
 		setDefaultCommand(new JoystickChassisCommand());
 	}
 
+	/**
+	 * Set the speed for the robot to drive at.
+	 * 
+	 * @param leftSpeed speed of the right side of the drive train
+	 * @param rightSpeed speed of the left side of the drive train
+	 */
 	public void setSpeed(double leftSpeed, double rightSpeed) {
 		SmartDashboard.putNumber("LeftMotorSpeed", leftSpeed);
 		SmartDashboard.putNumber("RightMotorSpeed", rightSpeed);
@@ -77,20 +77,45 @@ public class ChassisSubsystem extends R_Subsystem {
 		}
 	}
 
+	/**
+	 * Get the current angle from the gyro, in respect to it's starting 
+	 * position.
+	 * 
+	 * @return the current heading of the robot.
+	 */
 	public double getCurrentAngle() {
 		return gyro.getAngle();
 	}
 
+	/**
+	 * Get the difference, in degrees, of the current heading to the target angle.
+	 * Also gives the fastest direction of rotation to the angle, with a negative
+	 * return meaning counter-clockwise rotation is faster, and a positive meaning 
+	 * clockwise rotation is faster.
+	 * 
+	 * @param targetAngle angle you want to get the difference to
+	 * @return degrees to, and direction of, fastest rotation to the given angle.
+	 */
 	public double getAngleDifference(double targetAngle) {
 		return gyro.getAngleDifference(targetAngle);
 	}
 
+	/**
+	 * Check if either of the robot's proximity sensors are activated.
+	 * 
+	 * @return whether either proximity sensor is active.
+	 */
 	public boolean getProximity() {
 		boolean proximity = !leftProximitySensor.get() || !rightProximitySensor.get();
 		SmartDashboard.putBoolean("Proximity Sensor(s) active", proximity);
 		return proximity;
 	}
 
+	/**
+	 * Retrieve the distance off of the ultrasonic sensor.
+	 * 
+	 * @return the distance from the back of the robot to an object behind it
+	 */
 	public double getUltrasonicDistance() {
 		return this.ultrasonicSensor.getDistance();
 	}
@@ -122,14 +147,23 @@ public class ChassisSubsystem extends R_Subsystem {
 		this.rightEncoder.reset();
 	}
 
+	/**
+	 * Reset the ultrasonic sensor's filter.
+	 */
 	public void resetUltrasonicSensorFilter() {
 		ultrasonicSensor.reset();
 	}
 
+	/**
+	 * Reset the gyro heading.
+	 */
 	public void resetGyro() {
 		gyro.reset();
 	}
 	
+	/**
+	 * Calibrate the gyro. This also resets the heading.
+	 */
 	public void calibrateGyro() {
 		gyro.calibrate();
 	}

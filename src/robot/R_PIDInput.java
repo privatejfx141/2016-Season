@@ -14,5 +14,4 @@ public abstract class R_PIDInput implements PIDSource {
 	public PIDSourceType getPIDSourceType() {
 		return PIDSourceType.kDisplacement;
 	}
-
 }

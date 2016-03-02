@@ -13,9 +13,11 @@ import robot.commands.auto.base.DriveToUltraDistance;
 import robot.commands.auto.base.ShootBallCommand;
 import robot.commands.auto.base.WaitUntilPathClear;
 
+/**
+ * Autonomous command for the competition.
+ */
 public class AutoCommandGroup extends CommandGroup {
 	public AutoCommandGroup(Slot slot, Defense defense, Lane lane, Goal goal) {
-		System.out.println("Constructing Auto Command");
 		double normSpeed = 0.25;
 		double highSpeed = normSpeed * 2;
 		double waitTime = 4.0;
@@ -59,7 +61,6 @@ public class AutoCommandGroup extends CommandGroup {
 		addSequential(new WaitUntilPathClear(waitTime, slot));
 
 		// Figure out what x-position we need to drive to for our goal 
-		System.out.println("Goal");
 		switch (goal) {
 			case LEFT:
 				addSequential(new DriveToUltraDistance(normSpeed, 90, Slot.TWO.getDistanceToLeftWall()));

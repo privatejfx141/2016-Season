@@ -20,16 +20,22 @@ public class ShooterSubsystem extends R_Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(new JoystickShootCommand());	
 	}
-
-	public void shooterWheelSpeed(double leftSpeed, double rightSpeed) {
-		
-	}
 	
+	/**
+	 * Set the speed of the ball intake system.
+	 * 
+	 * @param speed the intake should spin at.
+	 */
 	public void setSpeed(double speed) {
 		shooterMotor.set(speed);
 		SmartDashboard.putNumber("ShooterMotor", speed);
 	}
 	
+	/**
+	 * Check if a ball is inside of the ball shooter
+	 * 
+	 * @return whether or not a ball is present.
+	 */
 	public boolean isBallIn(){
 		return !shooterLimitSwitch.get();
 	}

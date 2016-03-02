@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import robot.commands.GoStraightPID;
-import robot.commands.auto.TestAutoCommandGroup;
 import robot.oi.OI;
 import robot.subsystems.ChassisSubsystem;
 import robot.subsystems.ShooterSubsystem;
@@ -32,16 +31,19 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 
-	public static Robot instance = null;
+	private static Robot instance = null;
 	
 	public Robot() {
 		Robot.instance = this;
 	}
 	
+	public static Robot getInstance() { 
+		return instance; 
+	}
+	
 	@Override
 	public void autonomousInit() {
-		//autonomousCommand = oi.getAutoCommand();
-		autonomousCommand = new TestAutoCommandGroup();
+		autonomousCommand = oi.getAutoCommand();
 		
 		// schedule the autonomous command
 		autonomousCommand.start();
@@ -75,7 +77,6 @@ public class Robot extends IterativeRobot {
 		updateDashboard();
 	}
 
-	public static Robot getInstance() { return instance; }
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
