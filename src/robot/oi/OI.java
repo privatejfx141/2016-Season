@@ -25,24 +25,51 @@ public class OI {
 	private AutoChooser autoChooser = new AutoChooser();
 	private double[] lastButtonPress = new double[Button.values().length];
 	
+	/**
+	 * Get the speed off the driver joystick.
+	 * 
+	 * @return speed the robot should drive forward or backwards
+	 */
 	public double getSpeed() {
 		double joystickValue = driverStick.getAxis(Stick.LEFT, Axis.Y);
 		return -(Math.pow(joystickValue, 3) * 100) / 100.0;
 	}
 
+	/**
+	 * Get the turn off the driver joystick
+	 * 
+	 * @return speed the robot should turn at
+	 */
 	public double getTurn() {
 		double joystickValue = driverStick.getAxis(Stick.RIGHT, Axis.X);
 		return (Math.pow(joystickValue, 3) * 100) / 100.0;
 	}
 	
+	/**
+	 * Get the trigger value off the driver joystick. 
+	 * 
+	 * @param trigger you would like to read
+	 * @return value of the trigger
+	 */
 	public double getTrigger(Trigger trigger) {
 		return driverStick.getTrigger(trigger);
 	}
 	
+	/**
+	 * Get the POV value off the driver joystick.
+	 * 
+	 * @return angle from the POV
+	 */
 	public int getPOVAngle() {
 		return driverStick.getPOVAngle();
 	}
 	
+	/**
+	 * Get the button off the driver joystick
+	 * 
+	 * @param button you would like to read off the joystick
+	 * @return whether or not the button is being pressed.
+	 */
 	public boolean getButton(Button button) {
 		return debounce(button);
 	}
@@ -50,8 +77,7 @@ public class OI {
 	/**
 	 * Debounce the given button. 
 	 * 
-	 * @param button
-	 * 				The button of which you want to debounce.
+	 * @param button The button of which you want to debounce.
 	 * @return
 	 */
 	private boolean debounce(Button button) {
@@ -65,8 +91,7 @@ public class OI {
 	/**
 	 * Sets the joystick rumble strength.
 	 * 
-	 * @param strength
-	 *            Has to be between 0.0 and 1.0.
+	 * @param strength has to be between 0.0 and 1.0.
 	 */
 	public void setRumble(double strength) {
 		driverStick.setRumble(strength);
@@ -76,50 +101,50 @@ public class OI {
 	 * Sets the joystick rumble strength on the left and right channels
 	 * individually.
 	 * 
-	 * @param leftRumble
-	 *            Rumble strength on the left channel.
-	 * @param rightRumble
-	 *            Rumble strength on the right channel.
+	 * @param leftRumble rumble strength on the left channel.
+	 * @param rightRumble rumble strength on the right channel.
 	 */
 	public void setRumble(double leftRumble, double rightRumble) {
 		driverStick.setRumble(leftRumble, rightRumble);
 	}
 	
 	/**
-	 * Returns the defense that the robot is currently set in front of 
+	 * The defense that the robot is currently set in front of 
 	 * as set in smart dashboard.
 	 * 
-	 * @return Defense
-	 * 				The defense the robot is in front of
+	 * @return Defense the defense the robot is in front of
 	 */
 	public Defense getDefense() {
 		return Defense.toEnum(autoChooser.getSelectedDefence());
 	}
 
 	/**
-	 * Returns the slot that the robot is currently at as set in 
-	 * smart dashboard.
+	 * The slot that the robot is currently at as set in smart dashboard.
 	 * 
-	 * @return Slot
-	 * 				The slot that the robot is at
+	 * @return Slot the slot that the robot is at
 	 */
 	public Slot getSlot() {
 		return Slot.toEnum(autoChooser.getSelectedSlot());
 	}
 
 	/**
-	 * Returns the lane that the robot should make it's turn in. 
+	 * The lane that the robot should make it's turn in. 
 	 * Two "lanes" have been allocated on the field, short, and long,
 	 * this is to help protect against robot collisions when doing autonomous.
 	 * Must discuss with allience members which lane they will be occupying so 
 	 * as to decide when to turn.
-	 * @return Lane
-	 * 				The lane that the robot will turn in
+	 * 
+	 * @return Lane the lane that the robot will turn in
 	 */
 	public Lane getLane() {
 		return Lane.toEnum(autoChooser.getSelectedDistance());
 	}
 
+	/**
+	 * The goal the robot will attempt to score in.
+	 * 
+	 * @return Goal the robot will score in
+	 */
 	public Goal getGoal() {
 		return Goal.toEnum(autoChooser.getSelectedGoal());
 	}
@@ -136,6 +161,7 @@ public class OI {
 	}
 	
 	public void init() {
+		// Fill the debouncing array with 0 as no button has been pressed.
 		Arrays.fill(lastButtonPress, 0);
 	}
 

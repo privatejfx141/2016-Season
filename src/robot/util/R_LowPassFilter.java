@@ -3,13 +3,15 @@ package robot.util;
 /**
  * This class utilizes bilinear transformations to calculate the, what would be,
  * a more correct reading from the sensor. It also tracks the last value and the current
- * value and throws out any readings that stray too far from the expected values 
+ * value and throws out any readings that stray too far from the expected values. 
  * 
- * @author Chase
+ * Math that this is based upon:
+ * y = [(x + xp) - (1 - (2tau/T))yp] / [1 + (2tau/T)]
  * 
+ * where tau = 1 / f-cutoff
+ * T = sample time
  */
 public class R_LowPassFilter {
-
 	private final double tau;
 	private final double sampleTime;
     private final double maxIncrement;
@@ -18,13 +20,6 @@ public class R_LowPassFilter {
     private double xPrevious = 0;
     
     private double lastError = -1;
-
-	/*
-	 * y = [(x + xp) - (1 - (2tau/T))yp] / [1 + (2tau/T)]
-	 * 
-	 * where tau = 1 / f-cutoff
-	 * T = sample time
-	 */
 
     /**
      * This class can be used to filter data through a low pass filter.
@@ -41,6 +36,11 @@ public class R_LowPassFilter {
         this.maxIncrement    = maxIncrement;
     }
 
+    /**
+     * Reset the lowpass filter to an initial value.
+     * 
+     * @param initVal value to initialize the filter to.
+     */
     public void reset(double initVal) {
         yPrevious = xPrevious = initVal;
     }
@@ -55,7 +55,6 @@ public class R_LowPassFilter {
     	// Determine whether to use this sample.
         if (Math.abs(x - xPrevious) < maxIncrement || Math.abs(lastError - x) < 5) {
        	    // y = [(x + xp) - (1 - (2tau/T))yp] / [1 + (2tau/T)]
-
         	double numerator = (x + xPrevious) - (1 - (2 * tau / sampleTime)) * yPrevious;
             double denominator = 1 + (2 * tau / sampleTime);
             double y = numerator / denominator;
@@ -67,7 +66,6 @@ public class R_LowPassFilter {
             return y;
         } else {
         	lastError = x;
-        	System.out.println("Throwing out Ultrasonic value: " + x);
         }
 
         return yPrevious;

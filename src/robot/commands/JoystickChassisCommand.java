@@ -17,10 +17,14 @@ public class JoystickChassisCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("Init the Joystick");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+    	if (Robot.getInstance().isAutonomous()) { return; }
+    	
     	double speed = Robot.oi.getSpeed();
     	double turn = Robot.oi.getTurn();
     	

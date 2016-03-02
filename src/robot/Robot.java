@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import robot.commands.GoStraightPID;
-import robot.commands.auto.TestAutoCommandGroup;
 import robot.oi.OI;
 import robot.subsystems.ChassisSubsystem;
 import robot.subsystems.ShooterSubsystem;
@@ -32,10 +31,19 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 
+	private static Robot instance = null;
+	
+	public Robot() {
+		Robot.instance = this;
+	}
+	
+	public static Robot getInstance() { 
+		return instance; 
+	}
+	
 	@Override
 	public void autonomousInit() {
-		//autonomousCommand = oi.getAutoCommand();
-		autonomousCommand = new TestAutoCommandGroup();
+		autonomousCommand = oi.getAutoCommand();
 		
 		// schedule the autonomous command
 		autonomousCommand.start();
@@ -48,6 +56,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+//		System.out.println("Auto periodic");
 		Scheduler.getInstance().run();
 		subsystemPeriodic();
 		updateDashboard();
