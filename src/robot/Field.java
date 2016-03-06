@@ -24,17 +24,18 @@ public class Field {
 	}
 	
 	public enum Lane {
-		CLOSE ("Close", 0,130),
-		FAR ("Far", 40, 90);
+		CLOSE ("Close", 0),
+		FAR ("Far", 60);
 		
+		private final static int distanceFromDefenseToFarWall = 115;
 		private final String stringValue;
 		private final int driveDistance;
 		private final int distanceToWall;
 				
-		Lane(String stringValue, int driveDistance, int distanceToWall) {
+		Lane(String stringValue, int driveDistance) {
 			this.stringValue = stringValue;
 			this.driveDistance = driveDistance;
-			this.distanceToWall = distanceToWall;
+			this.distanceToWall = distanceFromDefenseToFarWall - driveDistance;
 		}
 		
 		public int getDistanceToWall() {

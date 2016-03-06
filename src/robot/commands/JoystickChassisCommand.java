@@ -52,8 +52,8 @@ public class JoystickChassisCommand extends Command {
     	
     	// If the driver is not driving forward, pivot the robot.
     	if (Math.abs(speed) < 0.03) {
-    		leftSpeed = turn * 0.5;
-    		rightSpeed = -turn * 0.5;
+    		leftSpeed = turn * 0.25;
+    		rightSpeed = -turn * 0.25;
     	} else {
     		if (speed < 0) {
     			leftSpeed = (turn > 0) ? speed * (1 + turn) : speed;

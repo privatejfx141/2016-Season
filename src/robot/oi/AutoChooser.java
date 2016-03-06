@@ -8,35 +8,48 @@ public class AutoChooser {
 	SendableChooser defenceChooser = new SendableChooser();
 	SendableChooser distanceChooser = new SendableChooser();
 	SendableChooser goalChooser = new SendableChooser();
-
+	SendableChooser autoChooser = new SendableChooser();
+	
 	public AutoChooser() {
-		laneChooser.addObject("1", new Integer(1));
+		laneChooser.addDefault("1", new Integer(1));
 		laneChooser.addObject("2", new Integer(2));
 		laneChooser.addObject("3", new Integer(3));
 		laneChooser.addObject("4", new Integer(4));
 		laneChooser.addObject("5", new Integer(5));
 
-		defenceChooser.addObject("Low Bar", new String("Low Bar"));
-		defenceChooser.addObject("Ramparts", new String("Ramparts"));
-		defenceChooser.addObject("Moat", new String("Moat"));
-		defenceChooser.addObject("Rock Wall", new String("Rock Wall"));
-		defenceChooser.addObject("Rough Terrain", new String("Rough Terrain"));
-		defenceChooser.addObject("Portcullis", new String("Portcullis"));
-		defenceChooser.addObject("Cheval de Frise", new String("Cheval de Frise"));
+		defenceChooser.addDefault("Low Bar", "Low Bar");
+		defenceChooser.addObject("Ramparts", "Ramparts");
+		defenceChooser.addObject("Moat", "Moat");
+		defenceChooser.addObject("Rock Wall", "Rock Wall");
+		defenceChooser.addObject("Rough Terrain", "Rough Terrain");
+		defenceChooser.addObject("Portcullis", "Portcullis");
+		defenceChooser.addObject("Cheval de Frise", "Cheval de Frise");
 
-		distanceChooser.addObject("Close", new String("Close"));
-		distanceChooser.addObject("Far", new String("Far"));
+		distanceChooser.addDefault("Close", "Close");
+		distanceChooser.addObject("Far", "Far");
 
-		goalChooser.addObject("Left", new String("Left"));
-		goalChooser.addObject("Center", new String("Center"));
-		goalChooser.addObject("Right", new String("Right"));
-
+		goalChooser.addDefault("Left", "Left");
+		goalChooser.addObject("Center", "Center");
+		goalChooser.addObject("Right", "Right");
+		
+		autoChooser.addDefault("Standard Auto", "Standard Auto");
+		autoChooser.addObject("Do Nothing", "Do Nothing");
+		
 		SmartDashboard.putData("Slot position", laneChooser);
 		SmartDashboard.putData("Defences", defenceChooser);
 		SmartDashboard.putData("Distance", distanceChooser);
 		SmartDashboard.putData("Goal", goalChooser);
+		SmartDashboard.putData("Enable Auto?", autoChooser);
 	}
-
+	
+	/**
+	 * 
+	 * @return What to do in auto
+	 */
+	public String whatDoWeDo() {
+		return (String) autoChooser.getSelected();
+	}
+	
 	/**
 	 * 
 	 * @return The selected lane, as an integer

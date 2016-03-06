@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = oi.getAutoCommand();
 		
 		// schedule the autonomous command
-		autonomousCommand.start();
+		if (autonomousCommand != null) autonomousCommand.start();
 
 		updateDashboard();
 	}
@@ -56,7 +56,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-//		System.out.println("Auto periodic");
 		Scheduler.getInstance().run();
 		subsystemPeriodic();
 		updateDashboard();
@@ -86,7 +85,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		cameraServer = CameraServer.getInstance();
-        cameraServer.setQuality(50);
+        cameraServer.setQuality(30);
+        cameraServer.setSize(1);
         cameraServer.startAutomaticCapture("cam0");
         
 		// Add all the subsystems to the subsystem list.
@@ -145,6 +145,7 @@ public class Robot extends IterativeRobot {
 		for (R_Subsystem r : subsystemList) {
 			r.updateDashboard();
 		}
+		
 		oi.updateDashboard();
 
 		GoStraightPID.updateDashboard();

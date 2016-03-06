@@ -1,26 +1,25 @@
 package robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import robot.Robot;
 import robot.Field.Defense;
 import robot.Field.Goal;
 import robot.Field.Lane;
 import robot.Field.Slot;
+import robot.Robot;
 import robot.commands.RotateToAngle;
 import robot.commands.auto.base.DriveToDistance;
 import robot.commands.auto.base.DriveToProximity;
 import robot.commands.auto.base.DriveToUltraDistance;
 import robot.commands.auto.base.ShootBallCommand;
-import robot.commands.auto.base.WaitUntilPathClear;
 
 /**
  * Autonomous command for the competition.
  */
 public class AutoCommandGroup extends CommandGroup {
 	public AutoCommandGroup(Slot slot, Defense defense, Lane lane, Goal goal) {
-		double normSpeed = 0.25;
+		double normSpeed = 0.3;
 		double highSpeed = normSpeed * 2;
-		double waitTime = 4.0;
+		double waitTime = 2.0;
 		
 		// Make sure the robot has set it's forward facing direction as 0 deg
 		Robot.chassisSubsystem.resetGyro();
@@ -58,7 +57,7 @@ public class AutoCommandGroup extends CommandGroup {
 		addSequential(new RotateToAngle(90, waitTime));
 
 		// Wait until our path is clear, or 4 seconds. This is to avoid alliance members
-		addSequential(new WaitUntilPathClear(waitTime, slot));
+		//addSequential(new WaitUntilPathClear(waitTime, slot));
 
 		// Figure out what x-position we need to drive to for our goal 
 		switch (goal) {
@@ -86,13 +85,13 @@ public class AutoCommandGroup extends CommandGroup {
 		} else {
 			addSequential(new DriveToDistance(normSpeed, 0, Lane.FAR.getDistanceToWall()));
 		}
-
+																																																
 		// Drive back 15 inches to line up with the batter
-		if (goal != Goal.CENTER) {
+		if (goal == Goal.LEFT) {
 			addSequential(new DriveToDistance(normSpeed, 0, -15));
 		}
 
-		int rampAngle = 52;
+		int rampAngle = 50;
 
 		// Decide what angle we need to rotate to for our goal
 		switch (goal) {
@@ -103,7 +102,7 @@ public class AutoCommandGroup extends CommandGroup {
 				// do nothing.
 				break;
 			case RIGHT:
-				rampAngle = 360 - 20 - rampAngle;
+				rampAngle = 360 - (10 + rampAngle);
 				addSequential(new RotateToAngle(rampAngle, waitTime));
 				break;
 			default:
@@ -115,6 +114,8 @@ public class AutoCommandGroup extends CommandGroup {
 		addSequential(new DriveToProximity(normSpeed, rampAngle));
 		
 		// Shoot! Score!
-		addSequential(new ShootBallCommand());
+		if (goal == Goal.LEFT) {
+			addSequential(new ShootBallCommand());
+		}
 	}
 }

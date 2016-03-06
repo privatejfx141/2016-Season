@@ -10,11 +10,11 @@ import robot.Field.Lane;
 import robot.Field.Slot;
 import robot.commands.auto.AutoCommandGroup;
 import robot.util.R_GameController;
-import robot.util.R_GameControllerFactory;
 import robot.util.R_GameController.Axis;
 import robot.util.R_GameController.Button;
 import robot.util.R_GameController.Stick;
 import robot.util.R_GameController.Trigger;
+import robot.util.R_GameControllerFactory;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -150,14 +150,25 @@ public class OI {
 	}
 
 	/**
+	 * Determine whether or not we should do an auto.
+	 * 
+	 * @return whether or not to do auto
+	 */
+	public boolean doAuto() {
+		return autoChooser.whatDoWeDo() == "Standard Auto";
+	}
+	
+	/**
 	 * Method to get our autonomous command.
 	 * 
 	 * @return command
 	 * 				Returns the autonomous command for autonomous.
 	 */
 	public Command getAutoCommand() {
-		System.out.println("Getting Auto Command");
-		return new AutoCommandGroup(getSlot(), getDefense(), getLane(), getGoal());
+		if (doAuto()) {
+			return new AutoCommandGroup(getSlot(), getDefense(), getLane(), getGoal());
+		} 
+		return null;
 	}
 	
 	public void init() {
