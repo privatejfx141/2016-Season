@@ -2,9 +2,7 @@
 package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
-import robot.util.R_GameController.Button;
 
 /**
  *
@@ -30,25 +28,6 @@ public class JoystickChassisCommand extends Command {
     	
     	double leftSpeed;
     	double rightSpeed;
-    	
-    	if (Robot.oi.getButton(Button.BACK)) {
-    		Robot.chassisSubsystem.resetGyro();
-    	}
-    	
-    	if (Robot.oi.getButton(Button.START)) {
-    		Robot.chassisSubsystem.calibrateGyro();
-    	}
-    	
-    	if (Robot.oi.getPOVAngle() != -1) {
-    		Scheduler.getInstance().add(new RotateToAngle(Robot.oi.getPOVAngle(), 3.0));
-    		return;
-    	}
-    	
-    	// If the driver is not turning, then follow the gyro using the GoStraight command.
-    	if (Math.abs(turn) < 0.03) {
-    		Scheduler.getInstance().add(new GoStraightCommand(Robot.chassisSubsystem.getCurrentAngle()));
-    		return;
-    	}
     	
     	// If the driver is not driving forward, pivot the robot.
     	if (Math.abs(speed) < 0.03) {

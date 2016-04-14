@@ -3,15 +3,12 @@ package robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import robot.commands.GoStraightPID;
 import robot.oi.OI;
 import robot.subsystems.ChassisSubsystem;
-import robot.subsystems.ShooterSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,9 +20,7 @@ import robot.subsystems.ShooterSubsystem;
 public class Robot extends IterativeRobot {
 	// Declare all subsystems and add them to the list of subsystems
 	public static final ChassisSubsystem chassisSubsystem = new ChassisSubsystem();
-	public static final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 	public static OI oi;
-	public static CameraServer cameraServer;
 	
 	public static List<R_Subsystem> subsystemList = new ArrayList<R_Subsystem>();
 
@@ -43,7 +38,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = oi.getAutoCommand();
+		autonomousCommand = null;
 		
 		// schedule the autonomous command
 		if (autonomousCommand != null) autonomousCommand.start();
@@ -83,15 +78,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		
-		cameraServer = CameraServer.getInstance();
-        cameraServer.setQuality(30);
-        cameraServer.setSize(1);
-        cameraServer.startAutomaticCapture("cam0");
         
 		// Add all the subsystems to the subsystem list.
 		subsystemList.add(chassisSubsystem);
-		subsystemList.add(shooterSubsystem);
 
 		for (R_Subsystem s : subsystemList) {
 			s.init();
@@ -136,8 +125,6 @@ public class Robot extends IterativeRobot {
 			r.periodic();
 		}
 		oi.periodic();
-
-		GoStraightPID.periodic();
 	}
 
 	private void updateDashboard() {
@@ -147,8 +134,6 @@ public class Robot extends IterativeRobot {
 		}
 		
 		oi.updateDashboard();
-
-		GoStraightPID.updateDashboard();
 		
 		// Put the currently scheduled commands on the dashboard
 		// SmartDashboard.putData("SchedulerCommands", Scheduler.getInstance());

@@ -2,13 +2,7 @@ package robot.oi;
 
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import robot.Field.Defense;
-import robot.Field.Goal;
-import robot.Field.Lane;
-import robot.Field.Slot;
-import robot.commands.auto.AutoCommandGroup;
 import robot.util.R_GameController;
 import robot.util.R_GameController.Axis;
 import robot.util.R_GameController.Button;
@@ -21,8 +15,7 @@ import robot.util.R_GameControllerFactory;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private R_GameController driverStick = R_GameControllerFactory.getGameController(0);;
-	private AutoChooser autoChooser = new AutoChooser();
+	private R_GameController driverStick = R_GameControllerFactory.getGameController(0);
 	private double[] lastButtonPress = new double[Button.values().length];
 	
 	/**
@@ -106,69 +99,6 @@ public class OI {
 	 */
 	public void setRumble(double leftRumble, double rightRumble) {
 		driverStick.setRumble(leftRumble, rightRumble);
-	}
-	
-	/**
-	 * The defense that the robot is currently set in front of 
-	 * as set in smart dashboard.
-	 * 
-	 * @return Defense the defense the robot is in front of
-	 */
-	public Defense getDefense() {
-		return Defense.toEnum(autoChooser.getSelectedDefence());
-	}
-
-	/**
-	 * The slot that the robot is currently at as set in smart dashboard.
-	 * 
-	 * @return Slot the slot that the robot is at
-	 */
-	public Slot getSlot() {
-		return Slot.toEnum(autoChooser.getSelectedSlot());
-	}
-
-	/**
-	 * The lane that the robot should make it's turn in. 
-	 * Two "lanes" have been allocated on the field, short, and long,
-	 * this is to help protect against robot collisions when doing autonomous.
-	 * Must discuss with allience members which lane they will be occupying so 
-	 * as to decide when to turn.
-	 * 
-	 * @return Lane the lane that the robot will turn in
-	 */
-	public Lane getLane() {
-		return Lane.toEnum(autoChooser.getSelectedDistance());
-	}
-
-	/**
-	 * The goal the robot will attempt to score in.
-	 * 
-	 * @return Goal the robot will score in
-	 */
-	public Goal getGoal() {
-		return Goal.toEnum(autoChooser.getSelectedGoal());
-	}
-
-	/**
-	 * Determine whether or not we should do an auto.
-	 * 
-	 * @return whether or not to do auto
-	 */
-	public boolean doAuto() {
-		return autoChooser.whatDoWeDo() == "Standard Auto";
-	}
-	
-	/**
-	 * Method to get our autonomous command.
-	 * 
-	 * @return command
-	 * 				Returns the autonomous command for autonomous.
-	 */
-	public Command getAutoCommand() {
-		if (doAuto()) {
-			return new AutoCommandGroup(getSlot(), getDefense(), getLane(), getGoal());
-		} 
-		return null;
 	}
 	
 	public void init() {
