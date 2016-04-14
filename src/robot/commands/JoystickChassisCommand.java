@@ -4,7 +4,6 @@ package robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
-import robot.util.R_GameController.Button;
 
 /**
  *
@@ -22,7 +21,6 @@ public class JoystickChassisCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     	if (Robot.getInstance().isAutonomous()) { return; }
     	
     	double speed = Robot.oi.getSpeed();
@@ -31,11 +29,11 @@ public class JoystickChassisCommand extends Command {
     	double leftSpeed;
     	double rightSpeed;
     	
-    	if (Robot.oi.getButton(Button.BACK)) {
+    	if (Robot.oi.getGyroResetButton()) {
     		Robot.chassisSubsystem.resetGyro();
     	}
     	
-    	if (Robot.oi.getButton(Button.START)) {
+    	if (Robot.oi.getGyroCalibrateButton()) {
     		Robot.chassisSubsystem.calibrateGyro();
     	}
     	

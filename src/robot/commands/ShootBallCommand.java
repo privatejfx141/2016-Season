@@ -2,7 +2,6 @@ package robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import robot.Robot;
-import robot.util.R_GameController.Button;
 
 /**
  *
@@ -25,7 +24,7 @@ public class ShootBallCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.isTimedOut() || Robot.oi.getButton(Button.LEFT_BUMPER);
+        return this.isTimedOut() || Robot.oi.getCancelButton();
     }
 
     // Called once after isFinished returns true
