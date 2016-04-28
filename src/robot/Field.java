@@ -62,7 +62,7 @@ public class Field {
 		TWO   (2, 73), 
 		THREE (3, 110), 
 		FOUR  (4, 160), 
-		FIVE  (5, 215); 
+		FIVE  (5, 200); 
 	
 		private final int intValue;
 		private final double distanceToLeftWall;

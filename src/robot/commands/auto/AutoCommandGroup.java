@@ -50,6 +50,8 @@ public class AutoCommandGroup extends CommandGroup {
 				break;
 		}
 
+		if (Robot.oi.stopAfterCrossing()) return;
+		
 		// Drive the distance to the lane. May not drive if lane is "close"
 		addSequential(new DriveToDistance(normSpeed, 0, lane.getDriveDistance()));
 

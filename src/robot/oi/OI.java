@@ -214,6 +214,15 @@ public class OI {
 	}
 	
 	/**
+	 * Determine whether or not we should do an auto.
+	 * 
+	 * @return whether or not to do auto
+	 */
+	public boolean stopAfterCrossing() {
+		return autoChooser.whenToStop() == "After Crossing";
+	}
+	
+	/**
 	 * Method to get our autonomous command.
 	 * 
 	 * @return command
