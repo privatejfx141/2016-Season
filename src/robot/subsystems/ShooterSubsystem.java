@@ -13,7 +13,8 @@ import robot.util.R_VictorSP;
 public class ShooterSubsystem extends R_Subsystem {
 	R_VictorSP shooterMotor = new R_VictorSP(RobotMap.MotorMap.INTAKE_MOTOR);
 	DigitalInput shooterLimitSwitch = new DigitalInput(RobotMap.SensorMap.SHOOTER_LIMIT_SWITCH.port);
-
+	boolean shooterOn = false;
+	
 	public void init() {
 	}
 
@@ -29,6 +30,7 @@ public class ShooterSubsystem extends R_Subsystem {
 	public void setSpeed(double speed) {
 		shooterMotor.set(speed);
 		SmartDashboard.putNumber("ShooterMotor", speed);
+		shooterOn = (speed != 0);
 	}
 	
 	/**
@@ -46,5 +48,7 @@ public class ShooterSubsystem extends R_Subsystem {
 	
 	@Override
 	public void updateDashboard() {
+		SmartDashboard.putBoolean("Shooter Running", shooterOn);
+		SmartDashboard.putBoolean("Ball In", !shooterLimitSwitch.get());
 	}
 }

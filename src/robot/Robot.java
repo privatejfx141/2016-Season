@@ -72,6 +72,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		//chassisSubsystem.calibrateGyro();
 		Scheduler.getInstance().run();
 		updateDashboard();
 	}
