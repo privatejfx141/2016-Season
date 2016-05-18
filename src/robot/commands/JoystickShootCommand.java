@@ -3,7 +3,6 @@ package robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
-import robot.util.R_GameController.Button;
 
 /**
  *
@@ -20,7 +19,7 @@ public class JoystickShootCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.oi.getButton(Button.RIGHT_BUMPER)) {
+    	if (Robot.oi.getShooterButton()) {
     		if (Robot.shooterSubsystem.isBallIn()) {
     			Scheduler.getInstance().add(new ShootBallCommand());
     		} else {

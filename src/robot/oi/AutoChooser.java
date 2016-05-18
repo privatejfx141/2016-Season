@@ -9,6 +9,7 @@ public class AutoChooser {
 	SendableChooser distanceChooser = new SendableChooser();
 	SendableChooser goalChooser = new SendableChooser();
 	SendableChooser autoChooser = new SendableChooser();
+	SendableChooser whenToFinish = new SendableChooser();
 	
 	public AutoChooser() {
 		laneChooser.addDefault("1", new Integer(1));
@@ -35,11 +36,15 @@ public class AutoChooser {
 		autoChooser.addDefault("Standard Auto", "Standard Auto");
 		autoChooser.addObject("Do Nothing", "Do Nothing");
 		
+		whenToFinish.addDefault("After Shot", "After Shot"); 
+		whenToFinish.addObject("After Crossing", "After Crossing");
+		
 		SmartDashboard.putData("Slot position", laneChooser);
 		SmartDashboard.putData("Defences", defenceChooser);
 		SmartDashboard.putData("Distance", distanceChooser);
 		SmartDashboard.putData("Goal", goalChooser);
 		SmartDashboard.putData("Enable Auto?", autoChooser);
+		SmartDashboard.putData("When to finish", whenToFinish);
 	}
 	
 	/**
@@ -48,6 +53,10 @@ public class AutoChooser {
 	 */
 	public String whatDoWeDo() {
 		return (String) autoChooser.getSelected();
+	}
+	
+	public String whenToStop() {
+		return (String) whenToFinish.getSelected();
 	}
 	
 	/**

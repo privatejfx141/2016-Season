@@ -17,7 +17,7 @@ import robot.commands.auto.base.ShootBallCommand;
  */
 public class AutoCommandGroup extends CommandGroup {
 	public AutoCommandGroup(Slot slot, Defense defense, Lane lane, Goal goal) {
-		double normSpeed = 0.3;
+		double normSpeed = 0.35;
 		double highSpeed = normSpeed * 2;
 		double waitTime = 2.0;
 		
@@ -50,6 +50,8 @@ public class AutoCommandGroup extends CommandGroup {
 				break;
 		}
 
+		if (Robot.oi.stopAfterCrossing()) return;
+		
 		// Drive the distance to the lane. May not drive if lane is "close"
 		addSequential(new DriveToDistance(normSpeed, 0, lane.getDriveDistance()));
 

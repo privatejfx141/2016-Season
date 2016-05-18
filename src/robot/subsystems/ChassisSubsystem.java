@@ -48,7 +48,7 @@ public class ChassisSubsystem extends R_Subsystem {
 		pidControllers.add(rightMotorPID);
 
 		gyro.initGyro();
-		gyro.setSensitivity(0.00165 * 360 / 364.0);
+		gyro.setSensitivity(0.00165);
 		gyro.calibrate();
 	}
 
@@ -172,8 +172,8 @@ public class ChassisSubsystem extends R_Subsystem {
 	public void updateDashboard() {
 		SmartDashboard.putData("Left Motor", leftMotor);
 		SmartDashboard.putData("Right Motor", rightMotor);
-		SmartDashboard.putData("Left Limit Switch", leftProximitySensor);
-		SmartDashboard.putData("Right Limit Switch", rightProximitySensor);
+		SmartDashboard.putBoolean("Left Limit Switch", !leftProximitySensor.get());
+		SmartDashboard.putBoolean("Right Limit Switch", !rightProximitySensor.get());
 		SmartDashboard.putData("Left Encoder", leftEncoder);
 		SmartDashboard.putData("Right Encoder", rightEncoder);
 		SmartDashboard.putData("Left Motor PID", leftMotorPID);

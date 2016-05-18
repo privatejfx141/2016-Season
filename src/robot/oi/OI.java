@@ -25,6 +25,23 @@ public class OI {
 	private AutoChooser autoChooser = new AutoChooser();
 	private double[] lastButtonPress = new double[Button.values().length];
 	
+	private enum Action {
+		GYRO_RESET(Button.BACK),
+		GYRO_CALIBRATE(Button.START),
+		SHOOTER(Button.RIGHT_BUMPER),
+		CANCEL(Button.LEFT_BUMPER);
+		
+		private final Button button;
+		
+		Action(Button button) {
+			this.button = button;
+		}
+		
+		public Button getButton() {
+			return button;
+		}
+	}	
+	
 	/**
 	 * Get the speed off the driver joystick.
 	 * 
@@ -62,6 +79,44 @@ public class OI {
 	 */
 	public int getPOVAngle() {
 		return driverStick.getPOVAngle();
+	}
+	
+	/**
+	 * Check if the gyro reset button has been pressed.
+	 * 
+	 * @return if the reset button has been pressed.
+	 */
+	public boolean getGyroResetButton() {
+		return getButton(Action.GYRO_RESET.getButton());
+	}
+	
+	/**
+	 * Check if the gyro calibrate button has been pressed.
+	 * 
+	 * @return if the calibrate button has been pressed.
+	 */
+	public boolean getGyroCalibrateButton() {
+		return getButton(Action.GYRO_CALIBRATE.getButton());
+	}
+	
+	
+	/**
+	 * Check if the button for intake has been pressed.
+	 * 
+	 * @return if the button has been pressed.
+	 */
+	public boolean getShooterButton() {
+		return getButton(Action.SHOOTER.getButton());
+	}
+	
+	
+	/**
+	 * Check if the cancel command button has been pressed.
+	 * 
+	 * @return if the button has been pressed.
+	 */
+	public boolean getCancelButton() {
+		return getButton(Action.CANCEL.getButton());
 	}
 	
 	/**
@@ -159,6 +214,15 @@ public class OI {
 	}
 	
 	/**
+	 * Determine whether or not we should do an auto.
+	 * 
+	 * @return whether or not to do auto
+	 */
+	public boolean stopAfterCrossing() {
+		return autoChooser.whenToStop() == "After Crossing";
+	}
+	
+	/**
 	 * Method to get our autonomous command.
 	 * 
 	 * @return command
@@ -173,7 +237,7 @@ public class OI {
 	
 	public void init() {
 		// Fill the debouncing array with 0 as no button has been pressed.
-		Arrays.fill(lastButtonPress, 0);
+		Arrays.fill(lastButtonPress, 0.0);
 	}
 
 	/**
