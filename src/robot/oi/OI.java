@@ -51,6 +51,11 @@ public class OI {
 		double joystickValue = driverStick.getAxis(Stick.LEFT, Axis.Y);
 		return -(Math.pow(joystickValue, 3) * 100) / 100.0;
 	}
+	
+	public boolean getPistonButton(){
+		return driverStick.getButton(Button.X);
+	}
+	
 
 	/**
 	 * Get the turn off the driver joystick

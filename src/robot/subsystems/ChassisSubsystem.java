@@ -3,12 +3,14 @@ package robot.subsystems;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.R_PIDController;
 import robot.R_PIDInput;
 import robot.R_Subsystem;
 import robot.RobotMap;
 import robot.commands.JoystickChassisCommand;
+import robot.util.R_Compressor;
 import robot.util.R_Encoder;
 import robot.util.R_Gyro;
 import robot.util.R_Ultrasonic;
@@ -23,6 +25,10 @@ public class ChassisSubsystem extends R_Subsystem {
 	R_Encoder rightEncoder = new R_Encoder(RobotMap.EncoderMap.RIGHT);
 	R_Ultrasonic ultrasonicSensor = new R_Ultrasonic(RobotMap.SensorMap.ULTRASONIC.port);
 	R_Gyro gyro = new R_Gyro(RobotMap.SensorMap.GYRO.port);
+
+	R_Compressor compressor = new R_Compressor(0);
+	static Solenoid s1 = new Solenoid(4);
+	static Solenoid s2 = new Solenoid(5);
 
 	R_PIDInput leftPIDInput = new R_PIDInput() {
 		@Override
@@ -56,11 +62,23 @@ public class ChassisSubsystem extends R_Subsystem {
 		setDefaultCommand(new JoystickChassisCommand());
 	}
 
+	public static void setPiston(boolean state) {
+		// turn solenoid
+		s1.set(state);
+		s2.set(!state);
+	}
+
+	public boolean getPistonState() {
+		return s1.get();
+	}
+
 	/**
 	 * Set the speed for the robot to drive at.
 	 * 
-	 * @param leftSpeed speed of the right side of the drive train
-	 * @param rightSpeed speed of the left side of the drive train
+	 * @param leftSpeed
+	 *            speed of the right side of the drive train
+	 * @param rightSpeed
+	 *            speed of the left side of the drive train
 	 */
 	public void setSpeed(double leftSpeed, double rightSpeed) {
 		SmartDashboard.putNumber("LeftMotorSpeed", leftSpeed);
@@ -78,7 +96,7 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	/**
-	 * Get the current angle from the gyro, in respect to it's starting 
+	 * Get the current angle from the gyro, in respect to it's starting
 	 * position.
 	 * 
 	 * @return the current heading of the robot.
@@ -88,13 +106,15 @@ public class ChassisSubsystem extends R_Subsystem {
 	}
 
 	/**
-	 * Get the difference, in degrees, of the current heading to the target angle.
-	 * Also gives the fastest direction of rotation to the angle, with a negative
-	 * return meaning counter-clockwise rotation is faster, and a positive meaning 
-	 * clockwise rotation is faster.
+	 * Get the difference, in degrees, of the current heading to the target
+	 * angle. Also gives the fastest direction of rotation to the angle, with a
+	 * negative return meaning counter-clockwise rotation is faster, and a
+	 * positive meaning clockwise rotation is faster.
 	 * 
-	 * @param targetAngle angle you want to get the difference to
-	 * @return degrees to, and direction of, fastest rotation to the given angle.
+	 * @param targetAngle
+	 *            angle you want to get the difference to
+	 * @return degrees to, and direction of, fastest rotation to the given
+	 *         angle.
 	 */
 	public double getAngleDifference(double targetAngle) {
 		return gyro.getAngleDifference(targetAngle);
@@ -160,7 +180,7 @@ public class ChassisSubsystem extends R_Subsystem {
 	public void resetGyro() {
 		gyro.reset();
 	}
-	
+
 	/**
 	 * Calibrate the gyro. This also resets the heading.
 	 */

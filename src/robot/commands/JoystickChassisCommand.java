@@ -4,11 +4,16 @@ package robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import robot.Robot;
+import robot.subsystems.*;
 
 /**
  *
  */
 public class JoystickChassisCommand extends Command {
+	
+	long timeStart = 0;
+	long timeLength = 50000000;
+	boolean pistonState = true;
 
     public JoystickChassisCommand() {
         requires(Robot.chassisSubsystem);
@@ -63,6 +68,20 @@ public class JoystickChassisCommand extends Command {
     	}
     	
     	Robot.chassisSubsystem.setSpeed(leftSpeed, rightSpeed);
+    	
+    	if(Robot.oi.getPistonButton())
+		{
+			if (timeStart == 0) {
+				timeStart = System.nanoTime();
+				pistonState = !pistonState;
+				ChassisSubsystem.setPiston(pistonState);
+				// System.out.println(pistonState);
+			} else if ((System.nanoTime() - timeStart) > timeLength) // waited
+																		// enough
+			{
+				timeStart = 0;
+			}
+		}
 	}
 
     // Make this return true when this Command no longer needs to run execute()
